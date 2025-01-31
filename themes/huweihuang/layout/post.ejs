@@ -47,14 +47,7 @@ layout: layout
                 <!--打赏-->
 
                 <br>
-                <!--分享-->
-                <% if(config['share']) { %>
-                    <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
-                    <!--  css & js -->
-                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
-                <% } %>
-                <!--分享-->
+                
                 <br>                       
                 
                 <!-- require APlayer -->
@@ -146,18 +139,6 @@ layout: layout
                     </div>
                 </section>
                 <% }%>
-
-                <!-- Friends Blog -->
-                <% if(config.friends) { %>
-                <hr>
-                <h5>FRIENDS</h5>
-                <ul class="list-inline">
-
-                    <% config.friends.forEach(function(friend){ %>
-                        <li><a href="<%= friend.href %>" target="_blank"><%= friend.title %></a></li>
-                    <% }); %>
-                </ul>
-                <% }%>
             </div>
         </div>
     </div>
@@ -232,7 +213,7 @@ layout: layout
     }
 </script>
 <!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
-<script>
+<!-- <script>
     async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
         anchors.options = {
           visible: 'hover',
@@ -241,7 +222,7 @@ layout: layout
         };
         anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
     })
-</script>
+</script> -->
 <style>
     /* place left on bigger screen */
     @media all and (min-width: 800px) {

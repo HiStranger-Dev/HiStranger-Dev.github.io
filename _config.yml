@@ -127,13 +127,13 @@ category_map:
     Database: database
 
 tag_map:
-home_posts_tag: true # show posts tags
+home_posts_tag: false # show posts tags
 
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
-date_format: YYYY-MM-DD
+date_format: YYYY년 M월 D일
 time_format: HH:mm:ss
 
 # Pagination
