@@ -4,3 +4,4 @@ node_modules/
 package-lock.json
 db.json
 .DS_Store
+.deploy_git/

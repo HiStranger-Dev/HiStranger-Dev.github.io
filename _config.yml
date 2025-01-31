@@ -217,4 +217,4 @@ deploy:
     type: git
     repository: https://github.com/HiStranger-Dev/HiStranger-Dev.github.io
     branch: deploy
-    message: Update CNAME
+    message: Update
