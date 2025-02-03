@@ -17,6 +17,16 @@
 
     <link rel="canonical" href="https://www.tech.hi-str.com/article/하이스트레인저 기술블로그 개발기/">
 
+    <!-- 복사 방지용 스타일 추가 -->
+    <style>
+      body {
+        -webkit-user-select: none; /* Chrome, Safari */
+        -moz-user-select: none;    /* Firefox */
+        -ms-user-select: none;     /* Internet Explorer/Edge */
+        user-select: none;         /* 표준 */
+      }
+    </style>
+
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
@@ -24,18 +34,15 @@
     <link rel="stylesheet" href="/css/beantech.min.css"> <link rel="stylesheet" href="/css/donate.css">
 
     <!-- Pygments Highlight CSS -->
-    <link rel="stylesheet" href="/css/highlight.css"> <link rel="stylesheet" href="/css/widget.css"> <link rel="stylesheet" href="/css/rocket.css"> <link rel="stylesheet" href="/css/signature.css"> <link rel="stylesheet" href="/css/toc.css"> <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" href="/css/highlight.css"> <link rel="stylesheet" href="/css/widget.css"> <link rel="stylesheet" href="/css/rocket.css"> <link rel="stylesheet" href="/css/signature.css">
+
+    <!-- HiStranger Custom CSS -->
+    <link rel="stylesheet" href="/css/toc.css"> <link rel="stylesheet" href="/css/custom.css">
 
     <!-- Custom Fonts -->
     <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
     <!-- Hux change font-awesome CDN to qiniu -->
     <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- Hux Delete, sad but pending in China
-    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
-    css'>
-    -->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -47,7 +54,6 @@
     <!-- ga & ba script hoook -->
     <script></script>
 </head>
-
 
     <!-- hack iOS CSS :active style -->
     <body ontouchstart="">
@@ -128,13 +134,6 @@
 
                         
                         <li>
-                            <a href="/about/">About</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -143,6 +142,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
                         </li>
                         
                      -->
@@ -584,6 +590,26 @@
         <!-- Image to hack wechat -->
         <img src="https://www.tech.hi-str.com/img/icon_wechat.png" width="0" height="0" />
         <!-- Migrate from head to bottom, no longer block render and still work -->
+
+        <!-- 복사 방지용 스크립트 추가 -->
+        <script type="text/javascript">
+          // 마우스 오른쪽 버튼 클릭 방지
+          document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+          });
+
+          // 키보드 단축키 방지 (Ctrl+C, Ctrl+V 등)
+          document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && (event.key === 'c' || event.key === 'C' || event.key === 'x' || event.key === 'v' || event.key === 'a' || event.key === 's')) {
+              event.preventDefault();
+            }
+          });
+
+          // 드래그 앤 드롭 방지
+          document.addEventListener('dragstart', function(event) {
+            event.preventDefault();
+          });
+        </script>
     <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
         tex2jax: {
