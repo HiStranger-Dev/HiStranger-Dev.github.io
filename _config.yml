@@ -26,7 +26,7 @@ email: e-mail_address
 description: "Hi Stranger's Tech Blog"
 keyword: "Tech Blog"
 header-img: /img/header_img/background.jpg
-article-img: /img/article_header/article_bg.jpg
+article-img: /img/article_header/article_bg.png
 404-img: /img/header_img/404.png
 signature: false #show signature
 signature-img: img/signature/BeanTechSign-white.png
