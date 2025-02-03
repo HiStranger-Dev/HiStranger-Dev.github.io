@@ -19,5 +19,25 @@
         <!-- Image to hack wechat -->
         <img src="<%= config['url'] %><%= config['root'] %>img/icon_wechat.png" width="0" height="0" />
         <!-- Migrate from head to bottom, no longer block render and still work -->
+
+        <!-- 복사 방지용 스크립트 추가 -->
+        <script type="text/javascript">
+          // 마우스 오른쪽 버튼 클릭 방지
+          document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+          });
+
+          // 키보드 단축키 방지 (Ctrl+C, Ctrl+V 등)
+          document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && (event.key === 'c' || event.key === 'C' || event.key === 'x' || event.key === 'v' || event.key === 'a' || event.key === 's')) {
+              event.preventDefault();
+            }
+          });
+
+          // 드래그 앤 드롭 방지
+          document.addEventListener('dragstart', function(event) {
+            event.preventDefault();
+          });
+        </script>
     </body>
 </html>

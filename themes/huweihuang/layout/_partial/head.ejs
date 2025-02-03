@@ -14,6 +14,16 @@
 
     <link rel="canonical" href="<%= config.url + config.root + (page.path||'').replace('index.html', '') %>" />
 
+    <!-- 복사 방지용 스타일 추가 -->
+    <style>
+      body {
+        -webkit-user-select: none; /* Chrome, Safari */
+        -moz-user-select: none;    /* Firefox */
+        -ms-user-select: none;     /* Internet Explorer/Edge */
+        user-select: none;         /* 표준 */
+      }
+    </style>
+
     <!-- Bootstrap Core CSS -->
     <%- css('css/bootstrap.min.css') %>
 
@@ -21,10 +31,10 @@
     <%- css('css/beantech.min.css')%> <%- css('css/donate.css')%>
 
     <!-- Pygments Highlight CSS -->
-    <%- css('css/highlight') %> <%- css('css/widget')%> <%- css('css/rocket')%> <%- css('css/signature')%> <%-
+    <%- css('css/highlight') %> <%- css('css/widget')%> <%- css('css/rocket')%> <%- css('css/signature')%>
 
     <!-- HiStranger Custom CSS -->
-    css('css/toc')%> <%- css('css/custom.css')%>
+    <%- css('css/toc')%> <%- css('css/custom.css')%>
 
     <!-- Custom Fonts -->
     <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
@@ -34,12 +44,6 @@
         rel="stylesheet"
         type="text/css"
     />
-
-    <!-- Hux Delete, sad but pending in China
-    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
-    css'>
-    -->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
