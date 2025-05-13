@@ -3,12 +3,17 @@
 
     <sitemap>
         <loc>https://www.tech.hi-str.com/post-sitemap.xml</loc>
-        <lastmod>2025-02-28T08:31:49.777Z</lastmod>
+        <lastmod>2025-05-13T03:29:47.434Z</lastmod>
     </sitemap>
 
     <sitemap>
         <loc>https://www.tech.hi-str.com/page-sitemap.xml</loc>
         <lastmod>2025-02-03T00:51:38.408Z</lastmod>
+    </sitemap>
+
+    <sitemap>
+        <loc>https://www.tech.hi-str.com/category-sitemap.xml</loc>
+        <lastmod>2025-05-13T03:29:47.434Z</lastmod>
     </sitemap>
 
     <sitemap>
