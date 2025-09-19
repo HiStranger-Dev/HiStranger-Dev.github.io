@@ -1,13 +1,17 @@
-<!-- Sidebar Container -->
-<div class="
-    col-lg-3 col-lg-offset-0
-    col-md-3 col-md-offset-0
-    col-sm-12
+﻿<% if (theme.sidebar){ %>
+<section id="sidebar">
+  <div class="
+    col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 col-sm-12
     col-xs-12
     sidebar-container
-">
-    <% theme.widgets.forEach(function(widget){ %>
-        <%- partial('_widget/' + widget) %>
-        <hr>
+  ">
+    <% 
+      var widgets = theme.widgets || ['about', 'category', 'tag', 'archive'];
+      widgets.forEach(function(widget){ 
+    %>
+      <%- partial('_widget/' + widget, {}, {cache: false}) %>
+      <hr>
     <% }) %>
-</div>
+  </div>
+</section>
+<% } %>
