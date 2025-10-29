@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Head tag -->
+    <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Hi Stranger&#39;s Tech Blog" />
+    <meta name="keyword" content="Tech Blog" />
+    <link rel="shortcut icon" href="/img/icon.ico" />
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+         2025년 실무자가 알아야 할 LLM 기술 트렌드 - 하이스트레인저 기술 블로그 
+    </title>
+
+    <link rel="canonical" href="https://www.tech.hi-str.com/article/2025년 실무자가 알아야 할 LLM 기술 트렌드/" />
+
+    <!-- 복사 방지용 스타일 추가 -->
+    <style>
+      body {
+        -webkit-user-select: none; /* Chrome, Safari */
+        -moz-user-select: none;    /* Firefox */
+        -ms-user-select: none;     /* Internet Explorer/Edge */
+        user-select: none;         /* 표준 */
+      }
+    </style>
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Default Custom CSS -->
+    
+<link rel="stylesheet" href="/css/beantech.min.css">
+ 
+<link rel="stylesheet" href="/css/donate.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+ 
+<link rel="stylesheet" href="/css/widget.css">
+ 
+<link rel="stylesheet" href="/css/rocket.css">
+ 
+<link rel="stylesheet" href="/css/signature.css">
+
+
+    <!-- HiStranger Custom CSS -->
+    
+<link rel="stylesheet" href="/css/toc.css">
+ 
+<link rel="stylesheet" href="/css/custom.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link
+        href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css"
+        rel="stylesheet"
+        type="text/css"
+    />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 8.1.0"></head>
+
+    <!-- hack iOS CSS :active style -->
+    <body ontouchstart="">
+        <!-- Modified by mina -->
+<!-- Post Header -->
+
+
+<header class="intro-header" style="background-image: url('/img/article_header/llm_trend/llm_trend_header.png');">
+  <div id="signature"
+       >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+            <div class="post-heading">
+              
+                <div class="tags">
+                  
+                    <a class="tag" href="/tags/#LLM" title="LLM">LLM</a>
+                  
+                    <a class="tag" href="/tags/#GPT" title="GPT">GPT</a>
+                  
+                    <a class="tag" href="/tags/#GEMINI" title="GEMINI">GEMINI</a>
+                  
+                    <a class="tag" href="/tags/#LLAMA" title="LLAMA">LLAMA</a>
+                  
+                    <a class="tag" href="/tags/#CLOVA" title="CLOVA">CLOVA</a>
+                  
+                    <a class="tag" href="/tags/#RAG" title="RAG">RAG</a>
+                  
+                    <a class="tag" href="/tags/#AI" title="AI">AI</a>
+                  
+                </div>
+              
+              <h1>2025년 실무자가 알아야 할 LLM 기술 트렌드</h1>
+              
+                <h2 class="subheading">급변하는 AI 시대에 실무자가 적용할 수 있는 생성형 AI</h2>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </div> <!-- end of #signature -->
+</header>
+ <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Hi, Stranger</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="https://www.hi-str.com/" target="_blank">About</a>
+                    </li>
+
+                    <!-- 
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                     -->
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body = document.body;
+    var $toggle = document.querySelector(".navbar-toggle");
+    var $navbar = document.querySelector("#huxblog_navbar");
+    var $collapse = document.querySelector(".navbar-collapse");
+
+    $toggle.addEventListener("click", handleMagic);
+    function handleMagic(e) {
+        if ($navbar.className.indexOf("in") > 0) {
+            // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function () {
+                // prevent frequently toggle
+                if ($navbar.className.indexOf("in") < 0) {
+                    $collapse.style.height = "0px";
+                }
+            }, 400);
+        } else {
+            // OPEN
+            $collapse.style.height = "auto";
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+        <!-- Main Content -->
+        <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>안녕하세요, 하이스트레인저 테크리더 고수진입니다.</p>
+<p>최근 <strong>GPT-5</strong>가 발표되었고, 개발자들은 <strong>CoPilot</strong>, <strong>Claude</strong> 등 다양한 AI를 활용해 작업을 하고 있습니다. 저희 INSIGHT FLOW도 최근 고도화를 진행하면서 LLM 모델 및 다양한 멀티모달 AI들을 적용하고 있습니다.</p>
+<p>LLM 모델 하면 가장 먼저 떠오르는 것이 바로 <strong>생성형 AI 모델</strong>입니다. 그래서 이번 달에는 생성 LLM 모델에 대해 작성해 보려 합니다. AI 모델은 매일 쏟아져 나오지만, 각 모델은 비슷하면서도 다른 특징을 가지고 있습니다. 2024년부터 2025년까지의 생성형 LLM 모델에 대해 공유하고자 합니다.</p>
+<hr>
+<h3 id="생성형-ai-llm-기술-방향"><a href="#생성형-AI-LLM-기술-방향" class="headerlink" title="생성형 AI, LLM 기술 방향"></a><strong>생성형 AI, LLM 기술 방향</strong></h3><p>2023년부터 2025년은 생성형 LLM이 실험실을 벗어나 현업에서 가치를 입증한 <strong>전환기</strong>였습니다. OpenAI <strong>GPT-5</strong>의 통합 추론, Google <strong>Gemini</strong>의 네이티브 멀티모달 처리, Meta <strong>Llama 4</strong>의 10M 토큰 컨텍스트, 국내 <strong>HyperCLOVA X</strong>의 한국어 특화 성능은 기술의 고도화를 보여줍니다. 특히, 기업들은 LLM 도입을 통해 평균 3.7배의 ROI를 기록했다는 보고가 이어지고 있습니다.</p>
+<p>중요한 것은 단순히 <strong>많이 쓰는 모델</strong>이 아니라, 아키텍처와 동작 원리를 이해한 뒤 <em>적재적소에 적용</em>하는 일이라고 생각합니다. 원리를 알고 설계하고 운영하면 활용 가치는 배가 됩니다.</p>
+<hr>
+<h3 id="llm의-기술적-원리와-핵심-메커니즘"><a href="#LLM의-기술적-원리와-핵심-메커니즘" class="headerlink" title="LLM의 기술적 원리와 핵심 메커니즘"></a><strong>LLM의 기술적 원리와 핵심 메커니즘</strong></h3><h3 id="텍스트-생성의-마법-다음-토큰-예측"><a href="#텍스트-생성의-마법-다음-토큰-예측" class="headerlink" title="텍스트 생성의 마법: 다음 토큰 예측"></a><strong>텍스트 생성의 마법: 다음 토큰 예측</strong></h3><p>생성형 LLM의 핵심은 <strong>다음에 올 가장 적절한 단어(토큰)를 예측하는 것</strong>입니다.</p>
+<div style="text-align: center;">
+<img src="/img/article/llm_trend/token_predict.png" alt="토큰 예측" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<p>사용자가 “<strong>오늘 날씨가</strong>“라고 입력하면, 모델은 다음 토큰 후보(예: “좋네요”, “어때요”, “화창해요” 등)에 <strong>확률을 매기고 규칙에 따라 하나를 선택</strong>합니다. 이 과정을 반복해 문장과 문단이 생성됩니다.</p>
+<p>실제 생성 절차는 다음과 같습니다.</p>
+<ol>
+<li>입력 문장을 <strong>토큰</strong>으로 분해합니다.</li>
+<li>각 토큰을 <strong>임베딩 벡터</strong>로 변환합니다.</li>
+<li><strong>트랜스포머</strong>가 토큰 간 의존성을 계산해 다음 토큰의 확률 분포를 만듭니다.</li>
+<li><strong>샘플링 규칙</strong>(<em>temperature</em>, <em>top-p&#x2F;top-k</em> 등)에 따라 다음 토큰을 선택합니다.</li>
+</ol>
+<h3 id="트랜스포머-아키텍처"><a href="#트랜스포머-아키텍처" class="headerlink" title="트랜스포머 아키텍처"></a><strong>트랜스포머 아키텍처</strong></h3><div style="text-align: center;">
+<img src="/img/article/llm_trend/attention.png" alt="attention architecture" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<p><strong>어텐션</strong>은 모델이 입력 데이터에서 가장 중요한 부분에 <strong>집중</strong>할 수 있도록 도와주는 기법입니다. 이는 <strong>트랜스포머</strong> 모델의 핵심이며, 2017년 구글이 발표한 논문 “<em>Attention Is All You Need</em>“에서 소개되었습니다. 트랜스포머는 기존 신경망의 한계를 해결하며 병렬 처리를 가능하게 했고, 긴 문장의 의존 관계를 더 효과적으로 분석할 수 있게 되었습니다.</p>
+<h3 id="3단계-훈련-파이프라인의-진화"><a href="#3단계-훈련-파이프라인의-진화" class="headerlink" title="3단계 훈련 파이프라인의 진화"></a><strong>3단계 훈련 파이프라인의 진화</strong></h3><p>LLM 훈련 과정은 3단계로 구분됩니다.</p>
+<div style="text-align: center;">
+<img src="/img/article/llm_trend/traning pipeline.png" alt="trainging pipeline" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<ol>
+<li><strong>사전 훈련</strong>: 수조 개의 토큰으로 언어의 기본 패턴을 학습합니다.</li>
+<li><strong>지도학습 미세조정(SFT)</strong>: 미리 학습된 모델을 고품질 데이터셋으로 대화 능력을 개발합니다.</li>
+<li><strong>인간피드백 강화학습(RLHF)</strong>: 모델이 인간의 선호도에 맞는 응답을 생성하도록 최적화합니다.</li>
+</ol>
+<p>최근에는 <em>Constitutional AI</em>와 <strong>DPO(Direct Preference Optimization)</strong> 같은 새로운 정렬 기법이 등장하고 있습니다.</p>
+<h3 id="모델-크기와-성능의-관계"><a href="#모델-크기와-성능의-관계" class="headerlink" title="모델 크기와 성능의 관계"></a><strong>모델 크기와 성능의 관계</strong></h3><p>스케일링 법칙에 따르면 모델 크기, 훈련 데이터, 계산량이 증가할수록 성능이 향상됩니다.</p>
+<ul>
+<li><strong>7B 모델</strong>: 약 14GB 메모리가 필요해 로컬 실행이 가능합니다.</li>
+<li><strong>70B 모델</strong>: 140GB 메모리로 전문 GPU가 필요합니다.</li>
+<li><strong>175B+ 모델</strong>: 클라우드 서비스를 통한 접근이 현실적입니다.</li>
+</ul>
+<hr>
+<h3 id="2025년-주요-llm-모델-완전-분석"><a href="#2025년-주요-LLM-모델-완전-분석" class="headerlink" title="2025년 주요 LLM 모델 완전 분석"></a><strong>2025년 주요 LLM 모델 완전 분석</strong></h3><p><span style="background-color: #e2d8f8ff; padding: 2px; border-radius: 4px"><strong>GPT 시리즈: 비추론과 고급 추론</strong></span></p>
+<div style="text-align: center;">
+<img src="/img/article/llm_trend/gpt.png" alt="gpt5 eval" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<p>2025년 8월 8일 OpenAI는 <strong>GPT 5</strong>를 공개했습니다. GPT 5는 빠른 응답과깊은 추론을 자동으로 선택하는 통합 시스템으로 설계되었고, <strong>AIME 2025 무도구 94.6%, SWE-bench Verified 74.9%</strong>의 성능을 보였습니다. 또한 시스템 카드에서는 이전 추론 모델 OpenAI o3 대비 허위 응답(deception)이 눈에 띄게 줄어든 것으로 나타났습니다. 창작 품질에 대해선 <em>GPT 4가 더 낫다</em>라는 후기가 많은 편이지만 이전 모델에 비해 코딩 품질에 대해서는 향상된 결과를 보이는 듯 합니다. </p>
+<p><span style="background-color: #e2d8f8ff; padding: 2px; border-radius: 4px"><strong>Claude: Constitutional AI의 완성</strong></span></p>
+<div style="text-align: center;">
+<img src="/img/article/llm_trend/claude.png" alt="claude" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<p><strong>Claude</strong>는 2025년 8월 5일 <u>‘Claude Opus 4.1’</u>을 공개했습니다. Opus는 복잡한 분석·코딩 같은 전문 작업에 최적화된 최상위 모델이고, Sonnet은 속도·비용·성능의 중간 균형형입니다. Anthropic의 Constitutional AI 접근은 안전성과 유용성의 균형을 지향하며, Opus 4.1은 <strong>SWE-bench Verified에서 74.5%</strong>로 코딩 성능이 크게 개선되었습니다. 컨텍스트는 일반적으로 200K 토큰급을 지원하며, Sonnet 4는 API에서 최대 1M 토큰 컨텍스트도 제공합니다. 또 <em>MCP(Model Context Protocol) 를 지원하는 생태계라 외부 데이터·도구 연결이 수월합니다.</em><br>실사용에서는 세션이 바뀌면 대화 맥락이 자동으로 이어지지 않는 점(프로젝트별 영속 메모리 한계)과, 긴 입력에서는 컨텍스트 한도에 걸릴 수 있다는 점이 단점으로 느껴질 수 있습니다. 그럼에도 코딩·분석·작성 품질은 최근 제가 사용한 LLM 중에서는 가장 우수한 축에 들었습니다.</p>
+<p><span style="background-color: #e2d8f8ff; padding: 2px; border-radius: 4px"><strong>Gemini: 네이티브 멀티모달의 강자</strong></span></p>
+<div style="text-align: center;">
+<img src="/img/article/llm_trend/gemini.png" alt="nano banana" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<p>2025년 3월부터 8월 사이에 구글은 <strong>Gemini 2.5</strong> 시리즈를 Pro부터 Flash-Lite까지 순차 공개했습니다. Android 사용자라면 스마트폰에 이미 탑재된 경우가 많아 접근성이 가장 높다고 볼 수 있습니다. 최근 사진으로 피규어 만들기 등 좋은 유행도 보이고 있으며, Claude처럼 MCP를 지원하며, Google AI Studio에서 Gemini API를 통해 세부 파라미터를 조정해 모델 출력을 직접 실험할 수 있습니다.</p>
+<p><span style="background-color: #e2d8f8ff; padding: 2px; border-radius: 4px"><strong>Llama 4: 오픈 웨이트 언어 모델</strong></span></p>
+<div style="text-align: center;">
+<img src="/img/article/llm_trend/llama.png" alt="Llama" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<p>메타의 <strong>Llama</strong>는 <em>오픈 웨이트 전략</em>으로 세상에 나왔습니다. <u>초기에는 Alpaca, Vicuna처럼 LLaMA를 파인튜닝한 파생 모델들이 빠르게 등장하며 LLM 시장이 커지는 것에 기여</u>하기도 했습니다. 2025년 공개된 Llama 4는 MoE 구조를 채택한 네이티브 멀티모달 계열로, 입력에 따라 일부 전문가만 선택적으로 활성화해 연산 효율을 높이는 것이 특징입니다. 다만 큰 장점인 파라미터와 토큰 규모에 비해서 성능은… 역으로 가는 걸 보면 데이터만이 성능을 보장하는 것이 아니라 모델 설계와 개발 또한 중요한 것이라는 것을 다시금 깨닫게 됩니다. </p>
+<p><span style="background-color: #e2d8f8ff; padding: 2px; border-radius: 4px"><strong>HyperCLOVA: 한국어 특화 모델</strong></span></p>
+<div style="text-align: center;">
+<img src="/img/article/llm_trend/hyperclova.jpg" alt="하이퍼클로바" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<p>네이버 <strong>HyperCLOVA X</strong>는 14개 글로벌 모델 중 한국어, 상식, 수학, 코딩 부문에서 1위를 달성했습니다. 한국어 데이터를 6,500배 더 학습하여 ChatGPT 대비 압도적인 한국어 성능을 보이며, 한국어 특화 토크나이저로 해외 LLM 대비 최대 2배 빠른 처리가 가능합니다. 또한, 아무래도 네이버가 개발해서 <em>보안이 중요한 기업이나 공공기관에서 도입을 고려</em>하지 않을까요?</p>
+<p><span style="background-color: #e2d8f8ff; padding: 2px; border-radius: 4px"><strong>DeepSeek: LLM 오픈소스 생태계</strong></span></p>
+<div style="text-align: center;">
+<img src="/img/article/llm_trend/deepseek.png" alt="토큰 예측" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<p>이외에도 한 때 떠들썩했던 <strong>DeepSeek</strong>는 2025년 8월 20일에 3.1버전을 출시하였습니다. DeepSeek는 에이전틱 AI를 추구하며 다른 모델과는 다르게 개발하고 출시하는 모든 것들에 대하여 <em>논문과 오픈소스, 오픈웨이트모델이 배포된다</em>는 것이 장점입니다. 언제나 논문 읽는 건 도움이 되므로 시간 나실 때 읽어보는 것을 추천드립니다. </p>
+<h3 id="논문-정리"><a href="#논문-정리" class="headerlink" title="논문 정리"></a>논문 정리</h3><p><strong>TRANSFORMER</strong> <a href="https://arxiv.org/pdf/1706.03762">Attention Is All You Need</a></p>
+<p><strong>GPT</strong> <a href="https://arxiv.org/pdf/2303.08774">GPT-4 Technical Report</a></p>
+<p><strong>GEMINI</strong> <a href="https://arxiv.org/pdf/2507.06261">Gemini 2.5: Pushing the Frontier with Advanced Reasoning, Multimodality, Long Context, and Next Generation Agentic Capabilities</a></p>
+<p><strong>CLAUDE</strong> <a href="https://transformer-circuits.pub/2024/scaling-monosemanticity/index.html">Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet</a></p>
+<p><strong>Llama</strong> <a href="https://arxiv.org/pdf/2407.21783">The Llama 3 Herd of Models</a></p>
+<p><strong>HyperCLOVA</strong> <a href="https://arxiv.org/pdf/2404.01954">HyperCLOVA X Technical Report</a></p>
+<p><strong>DeepSeek</strong> <a href="https://arxiv.org/pdf/2505.09343">Insights into DeepSeek-V3</a></p>
+<hr>
+<h3 id="2024-2025년-혁신-트렌드"><a href="#2024-2025년-혁신-트렌드" class="headerlink" title="2024-2025년 혁신 트렌드"></a><strong>2024-2025년 혁신 트렌드</strong></h3><p><span style="background-color: #f8edd8ff; padding: 2px; border-radius: 4px"><strong>1. 멀티모달 AI의 발달</strong></span></p>
+<p><strong>GPT</strong>, <strong>Gemini</strong> 등 많은 LLM 모델이 텍스트뿐만 아니라 이미지, 파일 등 다양한 <strong>멀티모달</strong>을 지원하고 있습니다. 문서 요약 및 추출, 텍스트와 이미지의 혼합된 결과, 간단한 영상 생성 등 다양한 업무에 활용될 수 있습니다.</p>
+<p><span style="background-color: #f8edd8ff; padding: 2px; border-radius: 4px"><strong>2. RAG 시스템의 성숙과 진화</strong></span></p>
+<p><strong>RAG(Retrieval-Augmented Generation)</strong> 시스템은 하이브리드 검색(<em>시맨틱 검색+키워드 검색</em>)을 결합해 검색 정확도를 높였습니다. 최근 <strong>Qdrant</strong>, <strong>MongoDB Vector Search</strong> 등의 벡터 데이터베이스가 주목받으며, <strong>RAG vs. 긴 컨텍스트</strong> 활용에 대한 논의도 활발해지고 있습니다.</p>
+<p><span style="background-color: #f8edd8ff; padding: 2px; border-radius: 4px"><strong>3. AI 에이전트 시스템</strong></span></p>
+<p><strong>ReAct(Reasoning + Acting) 프레임워크</strong>가 에이전트 개발의 표준이 되었고, <em>OpenAI 호환 Function Calling API</em>로 에이전트 구축이 단순화되었습니다. **Berkeley Function Calling Leaderboard(BFCL)**에서 Llama 3.1 405B가 1위를 차지하며, 자동 코드 생성, SQL 쿼리 자동 생성 등 다양한 분야에서 활용되고 있습니다. 마이크로소프트 또한 <strong>Azure</strong>, <strong>MS Office</strong>, <strong>Copilot</strong> 등과 연동하여 에이전트 시스템을 고도화하고 있습니다.</p>
+<p><span style="background-color: #f8edd8ff; padding: 2px; border-radius: 4px"><strong>4. AI 도입을 위한 클라우드 전략의 변화</strong></span></p>
+<p>최근 <strong>프라이빗 클라우드</strong>가 다시 부상하고 있습니다. <strong>퍼블릭+프라이빗을 병행하는 하이브리드 전략</strong>을 채택하는 기업이 늘고 있습니다. 경험적으로 퍼블릭 클라우드 비용이 프라이빗 인프라의 소유 비용 대비 약 60–70% 수준에 이르면 프라이빗이 더 경제적일 수 있기 때문입니다.</p>
+<h3 id="성공적인-llm-도입-3단계권장-프레임"><a href="#성공적인-LLM-도입-3단계-권장-프레임" class="headerlink" title="성공적인 LLM 도입 3단계(권장 프레임)"></a><strong>성공적인 LLM 도입 3단계(권장 프레임)</strong></h3><ol>
+<li><strong>탐색&#x2F;검증</strong>: AI 범용 모델을 활용해 <strong>업무 적합성·효용</strong>을 빠르게 검증(<em>PoC</em>).</li>
+<li><strong>최적화&#x2F;SaaS 활용</strong>: 특정 업무에 맞는 <strong>SaaS&#x2F;플랫폼</strong>으로 <strong>효율·속도</strong>를 끌어올림.</li>
+<li><strong>맞춤형 시스템</strong>: 사내 데이터·규제·비용 구조에 맞는 <strong>커스텀 파이프라인&#x2F;미세조정·에이전트</strong>로 <strong>최대 효과</strong> 달성.</li>
+</ol>
+<blockquote>
+<p><em>만약 회사에서 도입을 고려 중이라면, 현재 업무·데이터·보안 요구사항을 정리한 뒤 위 순서대로 단계적 확장하면 좋습니다……</em></p>
+</blockquote>
+<hr>
+<h3 id="미래-전망과-시사점"><a href="#미래-전망과-시사점" class="headerlink" title="미래 전망과 시사점"></a><strong>미래 전망과 시사점</strong></h3><p>이제 좋은 모델 선택의 기준은 “어떤 모델이 최고인가?”가 아니라 “<span style="color: red"><strong>나의 요구사항에 가장 적합한 모델은 무엇인가?</strong></span>“로 변화했습니다. 저는 상황에 따라 다른 AI를 활용하는 편입니다. </p>
+<ul>
+<li><strong>성능 최우선</strong>: <em>Claude Opus&#x2F;GPT-5 Pro</em></li>
+<li><strong>균형 최우선</strong>: <em>Gemini 2.5 Flash&#x2F;Claude Sonnet</em></li>
+</ul>
+<p>물론 저는 Data Scientist로서의 역할을 수행하는 사람이며 다른 직업을 가지신 분들은 다른 모델을 더 선호할 수도 있을 것 같습니다. 다양한 모델을 사용해보시고 적합한 모델을 선정하시길 바랍니다. </p>
+<hr>
+<h3 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a><strong>마치며</strong></h3><p>처음 기술 블로그에 작성하게 될 글이 어떤 글이 되어야 할지 고민이 되었습니다. 실무적으로 사용을 하기 좋은 게 어떤 것이 있을까 고민을 하다 LLM으로 저의 첫 글을 쓰게 되었습니다. 처음 AI를 배웠을때부터 지금까지 뭐 하나 멈추는 것없이 기술은 끊임없이 발전하고 제가 배울 것은 매일매일 새로 생겨나는 느낌입니다. 2022년에는 생각도 못했던 것들이 몇 년 사이에 휘몰아치는 기분입니다. 옛날에는 글자 인식만 할 줄 알아도 우와 하던 시기가 있었는데 지금은 그정도는 아무것도 아닌 수준이 되었습니다. 불과 그게 10년도 채 되지 않았는데도요. 그만큼 AI는 기술 발전이 급격하게 진행되고 있습니다. 그만큼 배울 것도 많은 것 같습니다.</p>
+<p>이 글이 LLM이 어떻게 동작하는지 궁금하셨던 분께 작은 실마리가 되었으면 합니다. 이 글이 AI에 관심을 갖는 계기가 된다면 더없이 기쁠 것 같습니다.<br>읽어주셔서 감사합니다.</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/합성-컴포넌트-패턴-도입하기/" data-toggle="tooltip" data-placement="top" title="합성 컴포넌트 패턴 도입하기">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/개발자라면 알아야 할 EC2 장애 대응법/" data-toggle="tooltip" data-placement="top" title="개발자라면 알아야 할 EC2 장애 대응법">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EC%83%9D%EC%84%B1%ED%98%95-ai-llm-%EA%B8%B0%EC%88%A0-%EB%B0%A9%ED%96%A5"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">생성형 AI, LLM 기술 방향</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#llm%EC%9D%98-%EA%B8%B0%EC%88%A0%EC%A0%81-%EC%9B%90%EB%A6%AC%EC%99%80-%ED%95%B5%EC%8B%AC-%EB%A9%94%EC%BB%A4%EB%8B%88%EC%A6%98"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">LLM의 기술적 원리와 핵심 메커니즘</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%ED%85%8D%EC%8A%A4%ED%8A%B8-%EC%83%9D%EC%84%B1%EC%9D%98-%EB%A7%88%EB%B2%95-%EB%8B%A4%EC%9D%8C-%ED%86%A0%ED%81%B0-%EC%98%88%EC%B8%A1"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">텍스트 생성의 마법: 다음 토큰 예측</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%ED%8A%B8%EB%9E%9C%EC%8A%A4%ED%8F%AC%EB%A8%B8-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">트랜스포머 아키텍처</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%EB%8B%A8%EA%B3%84-%ED%9B%88%EB%A0%A8-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8%EC%9D%98-%EC%A7%84%ED%99%94"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">3단계 훈련 파이프라인의 진화</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EB%AA%A8%EB%8D%B8-%ED%81%AC%EA%B8%B0%EC%99%80-%EC%84%B1%EB%8A%A5%EC%9D%98-%EA%B4%80%EA%B3%84"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">모델 크기와 성능의 관계</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2025%EB%85%84-%EC%A3%BC%EC%9A%94-llm-%EB%AA%A8%EB%8D%B8-%EC%99%84%EC%A0%84-%EB%B6%84%EC%84%9D"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">2025년 주요 LLM 모델 완전 분석</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EB%85%BC%EB%AC%B8-%EC%A0%95%EB%A6%AC"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">논문 정리</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2024-2025%EB%85%84-%ED%98%81%EC%8B%A0-%ED%8A%B8%EB%A0%8C%EB%93%9C"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">2024-2025년 혁신 트렌드</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EC%84%B1%EA%B3%B5%EC%A0%81%EC%9D%B8-llm-%EB%8F%84%EC%9E%85-3%EB%8B%A8%EA%B3%84%EA%B6%8C%EC%9E%A5-%ED%94%84%EB%A0%88%EC%9E%84"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">성공적인 LLM 도입 3단계(권장 프레임)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EB%AF%B8%EB%9E%98-%EC%A0%84%EB%A7%9D%EA%B3%BC-%EC%8B%9C%EC%82%AC%EC%A0%90"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">미래 전망과 시사점</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EB%A7%88%EC%B9%98%EB%A9%B0"><span class="toc-nav-number">12.</span> <span class="toc-nav-text">마치며</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#LLM" title="LLM">LLM</a>
+                        
+                          <a class="tag" href="/tags/#GPT" title="GPT">GPT</a>
+                        
+                          <a class="tag" href="/tags/#GEMINI" title="GEMINI">GEMINI</a>
+                        
+                          <a class="tag" href="/tags/#LLAMA" title="LLAMA">LLAMA</a>
+                        
+                          <a class="tag" href="/tags/#CLOVA" title="CLOVA">CLOVA</a>
+                        
+                          <a class="tag" href="/tags/#RAG" title="RAG">RAG</a>
+                        
+                          <a class="tag" href="/tags/#AI" title="AI">AI</a>
+                        
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<!-- <script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script> -->
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+        <!-- Footer -->
+        <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- <ul class="list-inline text-center">
+                         
+                    <li>
+                        <a target="_blank" href="https://github.com/cinepick.dev@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                     
+                </ul> -->
+                <p class="copyright text-muted">
+                    Copyright &copy; HiStranger 2025
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document,
+            t = "script",
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener(
+                "load",
+                function (e) {
+                    c(null, e);
+                },
+                false
+            );
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($("#tag_cloud").length !== 0) {
+        async("https://www.tech.hi-str.com/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: "#bbbbee", end: "#0085a1" },
+            };
+            $("#tag_cloud a").tagcloud();
+        });
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    });
+</script>
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = "UA-XXXXXXXX-X";
+    var _gaDomain = "yoursite";
+
+    // Originial
+    (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+            i[r] ||
+            function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }),
+            (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+    })(window, document, "script", "//www.google-analytics.com/analytics.js", "ga");
+
+    ga("create", _gaId, _gaDomain);
+    ga("send", "pageview");
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = "xxx";
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+        <!-- <a id="rocket" href="#top" class=""></a> -->
+        <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+        <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+        <!-- Image to hack wechat -->
+        <img src="https://www.tech.hi-str.com/img/icon_wechat.png" width="0" height="0" />
+        <!-- Migrate from head to bottom, no longer block render and still work -->
+
+        <!-- 복사 방지용 스크립트 추가 -->
+        <script type="text/javascript">
+          // 마우스 오른쪽 버튼 클릭 방지
+          document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+          });
+
+          // 키보드 단축키 방지 (Ctrl+C, Ctrl+V 등)
+          document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && (event.key === 'c' || event.key === 'C' || event.key === 'x' || event.key === 'v' || event.key === 'a' || event.key === 's')) {
+              event.preventDefault();
+            }
+          });
+
+          // 드래그 앤 드롭 방지
+          document.addEventListener('dragstart', function(event) {
+            event.preventDefault();
+          });
+        </script>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

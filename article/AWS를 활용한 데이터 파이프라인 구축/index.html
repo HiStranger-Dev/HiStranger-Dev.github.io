@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Head tag -->
+    <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Hi Stranger&#39;s Tech Blog" />
+    <meta name="keyword" content="Tech Blog" />
+    <link rel="shortcut icon" href="/img/icon.ico" />
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+         AWS 서비스들로 구현하는 데이터 파이프라인 - 하이스트레인저 기술 블로그 
+    </title>
+
+    <link rel="canonical" href="https://www.tech.hi-str.com/article/AWS를 활용한 데이터 파이프라인 구축/" />
+
+    <!-- 복사 방지용 스타일 추가 -->
+    <style>
+      body {
+        -webkit-user-select: none; /* Chrome, Safari */
+        -moz-user-select: none;    /* Firefox */
+        -ms-user-select: none;     /* Internet Explorer/Edge */
+        user-select: none;         /* 표준 */
+      }
+    </style>
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Default Custom CSS -->
+    
+<link rel="stylesheet" href="/css/beantech.min.css">
+ 
+<link rel="stylesheet" href="/css/donate.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+ 
+<link rel="stylesheet" href="/css/widget.css">
+ 
+<link rel="stylesheet" href="/css/rocket.css">
+ 
+<link rel="stylesheet" href="/css/signature.css">
+
+
+    <!-- HiStranger Custom CSS -->
+    
+<link rel="stylesheet" href="/css/toc.css">
+ 
+<link rel="stylesheet" href="/css/custom.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link
+        href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css"
+        rel="stylesheet"
+        type="text/css"
+    />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 8.1.0"></head>
+
+    <!-- hack iOS CSS :active style -->
+    <body ontouchstart="">
+        <!-- Modified by mina -->
+<!-- Post Header -->
+
+
+<header class="intro-header" style="background-image: url('/img/article_header/data_pipeline/data_pipeline_background.jpg');">
+  <div id="signature"
+       >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+            <div class="post-heading">
+              
+                <div class="tags">
+                  
+                    <a class="tag" href="/tags/#AWS" title="AWS">AWS</a>
+                  
+                    <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                  
+                    <a class="tag" href="/tags/#Infra" title="Infra">Infra</a>
+                  
+                </div>
+              
+              <h1>AWS 서비스들로 구현하는 데이터 파이프라인</h1>
+              
+                <h2 class="subheading">클라우드 시대 데이터 파이프라인 구축, 우리는 이렇게 AWS를 활용했습니다.</h2>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </div> <!-- end of #signature -->
+</header>
+ <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Hi, Stranger</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="https://www.hi-str.com/" target="_blank">About</a>
+                    </li>
+
+                    <!-- 
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                     -->
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body = document.body;
+    var $toggle = document.querySelector(".navbar-toggle");
+    var $navbar = document.querySelector("#huxblog_navbar");
+    var $collapse = document.querySelector(".navbar-collapse");
+
+    $toggle.addEventListener("click", handleMagic);
+    function handleMagic(e) {
+        if ($navbar.className.indexOf("in") > 0) {
+            // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function () {
+                // prevent frequently toggle
+                if ($navbar.className.indexOf("in") < 0) {
+                    $collapse.style.height = "0px";
+                }
+            }, 400);
+        } else {
+            // OPEN
+            $collapse.style.height = "auto";
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+        <!-- Main Content -->
+        <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>안녕하세요, 하이스트레인저 백엔드 엔지니어 이상훈입니다.</p>
+<p>최근 서비스 개발에서 <strong>데이터 파이프라인</strong>은 없어서는 안 될 필수 요소로 자리 잡았습니다. 다른 개발자 여러분께서는 데이터 파이프라인을 어떻게 구축하고 계신가요?</p>
+<p>저희 팀은 데이터 파이프라인을 도입하면서 여러 가지 고민이 있었는데요. 이번 글에서는 데이터 파이프라인을 도입하게 된 배경부터 구축 과정에서 마주한 고민 사항들, 그리고 해결을 위해 선택한 솔루션들에 대해 공유하고자 합니다.<br>특히 AWS를 활용하여 어떻게 효율적이고 확장 가능한 데이터 파이프라인을 구축했는지, 저희의 경험과 인사이트를 공유합니다. 데이터 파이프라인 구축을 고민하시는 분들께 도움이 되기를 바랍니다.<br><br></p>
+<hr>
+<h1 id="데이터-파이프라인이란-무엇인가요"><a href="#데이터-파이프라인이란-무엇인가요" class="headerlink" title="데이터 파이프라인이란 무엇인가요?"></a>데이터 파이프라인이란 무엇인가요?</h1><p>데이터 파이프라인은 다양한 소스에서 발생한 데이터를 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>수집</strong></span>하고, 필요에 따라 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>가공</strong></span>하여 최종 목적지로 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>전달</strong></span>하는 일련의 과정입니다. 이를 통해 데이터는 원천에서부터 활용 지점까지 원활하게 흐르고, 비즈니스 인사이트 도출이나 서비스 개선에 활용될 수 있습니다.<br><br></p>
+<h2 id="일상생활의-데이터-파이프라인-1-실시간-교통-정보"><a href="#일상생활의-데이터-파이프라인-1-실시간-교통-정보" class="headerlink" title="일상생활의 데이터 파이프라인 #1 : 실시간 교통 정보"></a>일상생활의 데이터 파이프라인 #1 : 실시간 교통 정보</h2><div style="text-align: center;">
+  <img src="/img/article/data_pipeline/navigation.jpg" alt="실시간 교통 정보 제공" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<ul>
+<li><strong>데이터 수집</strong>: 도로에 설치된 센서나 차량의 GPS로부터 실시간 교통 데이터가 수집됩니다.</li>
+<li><strong>데이터 처리</strong>: 수집된 데이터를 즉시 처리하여 도로의 혼잡도나 사고 정보를 파악합니다.</li>
+<li><strong>데이터 전달</strong>: 내비게이션 앱이나 교통 안내 표시판에 실시간으로 업데이트하여 운전자들에게 제공합니다.</li>
+</ul>
+<br>
+
+<h2 id="일상생활의-데이터-파이프라인-2-날씨-예보-및-기상-정보"><a href="#일상생활의-데이터-파이프라인-2-날씨-예보-및-기상-정보" class="headerlink" title="일상생활의 데이터 파이프라인 #2 : 날씨 예보 및 기상 정보"></a>일상생활의 데이터 파이프라인 #2 : 날씨 예보 및 기상 정보</h2><div style="text-align: center;">
+  <img src="/img/article/data_pipeline/weather_forecast.jpg" alt="날씨 예보 및 기상 정보 제공" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<ul>
+<li><strong>데이터 수집</strong>: 위성, 기상 관측소, 레이더 등에서 온도, 습도, 기압 등의 기상 데이터를 수집합니다.</li>
+<li><strong>데이터 처리</strong>: 방대한 데이터를 실시간으로 처리하여 날씨 변화를 예측합니다.</li>
+<li><strong>데이터 전달</strong>: 정확한 기상 정보를 애플리케이션이나 웹사이트를 통해 대중에게 제공합니다.</li>
+</ul>
+<p>데이터 파이프라인은 이렇게 우리 생활 속에서 다양한 방식으로 활용되며, 데이터의 가치를 극대화하는 데 핵심적인 역할을 하고 있습니다.<br><br></p>
+<hr>
+<h1 id="insight-flow-소개"><a href="#INSIGHT-FLOW-소개" class="headerlink" title="INSIGHT FLOW 소개"></a>INSIGHT FLOW 소개</h1><p>데이터 파이프라인을 도입하게 된 서비스는 <a href="https://www.insightflow-ai.com/">INSIGHT FLOW</a>입니다.<br><br></p>
+<div style="text-align: center;">
+  <img src="/img/article/data_pipeline/InsightFlow_LOGO.png" alt="Insight Flow Logo" style="width: 60%; height: auto; border-radius: 10px;">
+</div>
+
+<p>INSIGHT FLOW는 관객의 반응을 분석하여 콘텐츠의 경쟁력을 높이는 데 도움을 주는 서비스예요.<br>간단히 말해, 이 서비스는 관객이 콘텐츠를 볼 때 얼마나 집중하고 어떤 감정을 느끼며 얼마나 만족하는지를 측정합니다. 이를 위해 맥박이나 뇌파 같은 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>바이오 신호</strong></span>와 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>적외선 카메라</strong></span>를 사용하여 관객의 반응을 수집하고, AI 기술로 이를 분석합니다.</p>
+<p>이렇게 얻은 데이터를 통해 콘텐츠 제작자나 마케팅 담당자는 관객이 실제로 어떻게 반응하는지를 알 수 있어, 더 좋은 콘텐츠를 만들고 전략을 세울 수 있어요.<br><br></p>
+<h2 id="기존-데이터-전달-방식의-문제점"><a href="#기존-데이터-전달-방식의-문제점" class="headerlink" title="기존 데이터 전달 방식의 문제점"></a>기존 데이터 전달 방식의 문제점</h2><p>초기에는 측정 인원이 많지 않아, 태블릿 로컬에 저장된 바이오 데이터와 카메라 데이터를 일일이 PC에 연결하여 추출했습니다. 그런 다음 이 데이터를 사내 NAS 서버로 업로드하고, 머신 러닝 PC에서 해당 데이터를 다시 다운로드하여 분석하는 방식으로 운영되었습니다.</p>
+<p>하지만 시간이 지나면서 측정자가 늘어나고, 관리해야 할 데이터의 규모도 GB 단위에서 TB 단위로 커지면서 다음과 같이 여러 문제가 발생했습니다.</p>
+<ol>
+<li><span style="background-color: #ff9e9e; padding: 2px; border-radius: 4px"><strong>시간 소요 증가</strong></span>: 데이터를 수동으로 옮기다 보니 시간이 많이 소요되었습니다.</li>
+<li><span style="background-color: #ff9e9e; padding: 2px; border-radius: 4px"><strong>휴먼 에러 발생</strong></span>: 사람이 직접 데이터를 이동시키면서 중복되거나 누락된 데이터가 발생하였습니다.</li>
+<li><span style="background-color: #ff9e9e; padding: 2px; border-radius: 4px"><strong>데이터 검증의 어려움</strong></span>: 데이터 검증이 제대로 이루어지지 않아 분석 과정에서 혼란이 생겼습니다.</li>
+<li><span style="background-color: #ff9e9e; padding: 2px; border-radius: 4px"><strong>분석 결과 조회 지연</strong></span>: 분석 결과를 확인하기까지 시간이 많이 걸렸습니다.</li>
+</ol>
+<p>이러한 문제들은 서비스의 효율성과 신뢰성을 저해하였습니다. 무엇보다 데이터를 다루는 서비스에서는 데이터의 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>일관성</strong></span>과 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>무결성</strong></span>이 보장되어야 합니다. 이러한 필요성에 따라, 저희는 <strong>데이터 파이프라인 도입</strong>을 결정하게 되었습니다.<br><br></p>
+<hr>
+<h1 id="aws를-선택한-이유"><a href="#AWS를-선택한-이유" class="headerlink" title="AWS를 선택한 이유"></a>AWS를 선택한 이유</h1><p>데이터 파이프라인을 구축하기 위해 저희는 여러 가지 솔루션을 검토하였습니다. 그중에서도 <strong>AWS</strong>(Amazon Web Services)를 선택하게 된 이유는 다음과 같습니다.<br><br></p>
+<h2 id="다른-솔루션과의-비교"><a href="#다른-솔루션과의-비교" class="headerlink" title="다른 솔루션과의 비교"></a>다른 솔루션과의 비교</h2><h3 id="자체-인프라-구축-vs-aws"><a href="#자체-인프라-구축-vs-AWS" class="headerlink" title="자체 인프라 구축 vs. AWS"></a>자체 인프라 구축 vs. AWS</h3><ul>
+<li><strong>자체 인프라의 한계</strong><br>초기 투자 비용이 많이 들고, 확장성이 떨어지며, 유지 보수에 많은 자원이 필요합니다. 또한 빠르게 변화하는 비즈니스 환경에 유연하게 대응하기 어렵습니다.</li>
+</ul>
+<h3 id="다른-클라우드-서비스azure-gcp-vs-aws"><a href="#다른-클라우드-서비스-Azure-GCP-vs-AWS" class="headerlink" title="다른 클라우드 서비스(Azure, GCP) vs. AWS"></a>다른 클라우드 서비스(Azure, GCP) vs. AWS</h3><ul>
+<li><strong>서비스 범위 및 성숙도</strong><br>AWS는 가장 오랜 기간 클라우드 서비스를 제공해 왔으며, 서비스의 다양성과 안정성이 뛰어납니다.</li>
+<li><strong>커뮤니티와 지원</strong><br>AWS는 사용자 커뮤니티가 활발하고 자료가 풍부하여 기술적인 문제를 해결하기 쉽습니다.</li>
+</ul>
+<br>
+
+<h2 id="데이터-파이프라인의-구성요소를-제공"><a href="#데이터-파이프라인의-구성요소를-제공" class="headerlink" title="데이터 파이프라인의 구성요소를 제공"></a>데이터 파이프라인의 구성요소를 제공</h2><p>데이터 파이프라인은 다음의 <strong>5가지 필수 구성요소</strong>로 이루어집니다. (<span style="color: gray"><a href="https://www.geeksforgeeks.org/data-pipeline-design-patterns-system-design/">GeeksForGeeks: Data Pipeline</a></span>)<br>AWS는 이러한 각 구성요소에 적합한 서비스를 제공하여 통합된 환경에서 파이프라인을 구축할 수 있게 합니다.</p>
+<ol>
+<li><p><strong>데이터 소스 (Data Sources)</strong><br>다양한 소스에서 데이터가 생성됩니다. AWS는 이러한 다양한 데이터 소스와의 통합을 지원합니다.<br><span style="color:gray; font-size:0.9em;">관련 AWS 서비스: Amazon RDS, Amazon DynamoDB, Amazon S3 등</span></p>
+</li>
+<li><p><strong>수집 (Ingestion)</strong><br>데이터를 파이프라인으로 추출하고 가져오는 단계입니다.<br><span style="color:gray; font-size:0.9em;">관련 AWS 서비스: Amazon Kinesis Data Streams, AWS Data Migration Service, AWS IoT Core</span></p>
+</li>
+<li><p><strong>데이터 처리 (Data Processing&#x2F;Transformation)</strong><br>수집된 데이터를 정제하고 변환하여 사용 가능한 형태로 만듭니다.<br><span style="color:gray; font-size:0.9em;">관련 AWS 서비스: AWS Glue, AWS Lambda, Amazon EMR</span></p>
+</li>
+<li><p><strong>저장 (Storage)</strong><br>처리된 데이터를 저장하여 추가 활용이 가능하도록 합니다.<br><span style="color:gray; font-size:0.9em;">관련 AWS 서비스: Amazon S3, Amazon Redshift, Amazon RDS, Amazon DynamoDB</span></p>
+</li>
+<li><p><strong>워크플로 오케스트레이션 (Workflow Orchestration)</strong><br>파이프라인의 작업 순서와 종속성을 관리하며, 모니터링과 오류 처리를 통해 안정성을 보장합니다.<br><span style="color:gray; font-size:0.9em;">관련 AWS 서비스: AWS Step Functions, AWS EventBridge</span></p>
+</li>
+</ol>
+<br>
+
+<h2 id="비용-효율성"><a href="#비용-효율성" class="headerlink" title="비용 효율성"></a>비용 효율성</h2><p>AWS를 선택한 또 다른 중요한 이유는 <strong>비용 효율성</strong>입니다.</p>
+<ul>
+<li><strong>초기 투자 비용 절감</strong><br>자체 인프라를 구축하려면 서버, 네트워킹 장비, 스토리지 등 막대한 초기 비용이 필요합니다. 반면, AWS는 필요한 자원을 클라우드에서 즉시 활용할 수 있어 초기 투자 비용을 크게 절감할 수 있습니다.</li>
+<li><strong>유연한 비용 구조</strong><br>AWS는 사용한 만큼만 비용을 지불하는 On-Demand 모델을 제공합니다. 이를 통해 불필요한 비용 지출을 막을 수 있고, 예산 계획도 유연하게 수립할 수 있습니다.</li>
+</ul>
+<br>
+
+<hr>
+<h1 id="구축"><a href="#구축" class="headerlink" title="구축"></a>구축</h1><p>데이터 파이프라인 구축은 먼저 전체적인 <strong>오케스트레이션</strong>을 설정한 후, <strong>데이터 수집 → 데이터 전처리 → 데이터 분석 → 저장</strong>의 진행 단계에 따라 순차적으로 진행하였습니다.</p>
+<p>전체 플로우 다이어그램은 다음과 같습니다.</p>
+<div style="position: relative; overflow: visible;">
+  <img src="/img/article/data_pipeline/data_pipeline_diagram.png" alt="Data Pipeline Diagram" style="position: relative; left: 50%; transform: translateX(-45%); width: 120rem; max-width: none; border-radius: 10px;">
+</div>
+<br>
+
+<h2 id="오케스트레이션"><a href="#오케스트레이션" class="headerlink" title="오케스트레이션"></a>오케스트레이션</h2><br>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <img src="/img/article/data_pipeline/event_bridge.png" alt="Event Bridge" style="width: 20%; border-radius: 10px; margin: 0 1%;">
+  <img src="/img/article/data_pipeline/step_function.png" alt="Step Function" style="width: 20%; border-radius: 10px; margin: 0 1%;">
+</div>
+
+<p>데이터 파이프라인은 사실 오케스트레이션 설정 없이도, 예를 들어 S3 업로드가 AWS Glue나 AWS Lambda를 트리거하는 방식으로 구축할 수 있어요. 그러나 이러한 방식은 추후 유지보수 시 시간이 많이 소요되고, 각 설정을 하나하나 기억해야 하는 부담이 있습니다.</p>
+<p>저희는 데이터 파이프라인의 흐름을 중앙에서 효율적으로 관리하기 위해 <strong>Event Bridge</strong>와 <strong>Step Functions</strong>를 활용한 오케스트레이션 방식을 선택하였습니다. Event Bridge를 사용하면 전체 이벤트 중에서 특정 이벤트만 필터링하여 원하는 AWS 서비스로 전달할 수 있고, 이를 통해 데이터의 전체 흐름을 Step Functions로 관리하면 파이프라인의 복잡성을 줄이고 유지보수를 간소화할 수 있습니다.<br><br></p>
+<img src="/img/article/data_pipeline/orchestration.gif" alt="Step Function Monitoring" style="width: 80%; border-radius: 10px;">
+<div style="text-align: center;">
+  <em>&lt;Step Function Monitoring&gt;</em>
+</div>
+<br>
+
+<hr>
+<h2 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h2><br>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <img src="/img/article/data_pipeline/lambda.png" alt="Lambda" style="width: 20%; border-radius: 10px; margin: 0 1%;">
+  <img src="/img/article/data_pipeline/firehose.png" alt="Firehose" style="width: 20%; border-radius: 10px; margin: 0 1%;">
+  <img src="/img/article/data_pipeline/s3.png" alt="S3" style="width: 20%; border-radius: 10px; margin: 0 1%;">
+</div>
+
+<p>저희는 앱으로부터 총 <strong>4가지 종류의 데이터</strong>를 수집합니다:</p>
+<ol>
+<li><strong>측정자의 서명</strong> (<code>.png</code>)</li>
+<li><strong>사용자의 개인 정보</strong> (<code>.json</code>)</li>
+<li><strong>카메라 영상</strong> (<code>.mp4</code>)</li>
+<li><strong>바이오 신호</strong> (<code>byte</code>)</li>
+</ol>
+<p>서명, 개인 정보, 영상 데이터는 Lambda를 활용하여 앱에 일시적인 S3 Presigned URL을 발급함으로써 간단하게 수집할 수 있었어요. 앱은 이 URL을 통해 해당 데이터를 직접 S3 버킷에 업로드합니다.</p>
+<p>그러나 바이오 신호의 수집에는 고민이 있었습니다. 측정이 종료된 후에야 바이오 신호 데이터를 받게 되면, 측정 중에 발생한 이상을 즉시 파악할 수 없었습니다. 더욱이 우리는 <strong>실시간</strong>으로 사용자의 바이오 신호를 모니터링하고자 했습니다.</p>
+<p>이러한 문제를 해결하기 위해 Amazon Kinesis Data Firehose를 도입하였습니다. <a href="https://docs.aws.amazon.com/ko_kr/firehose/latest/dev/what-is-this-service.html">Firehose</a>는 준실시간으로 데이터를 수집하고 전송할 수 있는 서비스예요. 데이터를 저장하기 위한 별도의 전처리 과정도 필요 없어서 빠르게 구축하기에 적합하다고 판단했습니다. 이를 통해 앱으로부터 일정 간격으로 바이오 신호 데이터를 전송받아 즉시 저장하고 확인할 수 있게 되었습니다.</p>
+<p>다만, Firehose를 통해 데이터를 S3에 저장할 때 저장 디렉토리 구조를 변경하고 싶다면 Lambda를 거쳐야 해요. 이 과정에서 최소 60초의 지연 시간이 발생하기 때문에, 완전한 실시간 처리를 원한다면 적합하지 않을 수 있습니다.</p>
+<br>
+
+<hr>
+<h2 id="데이터-전처리"><a href="#데이터-전처리" class="headerlink" title="데이터 전처리"></a>데이터 전처리</h2><br>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <img src="/img/article/data_pipeline/glue.png" alt="Glue" style="width: 20%; border-radius: 10px;">
+</div>
+
+<p>데이터 전처리 과정에서 어떤 AWS 서비스를 사용할지 고민이 있었어요.</p>
+<p>AWS에는 복잡한 설정 없이 간편하게 전처리할 수 있는 Lambda라는 선택지와, 복잡하고 대용량의 전처리도 지원하는 Glue라는 선택지도 있었습니다. 처음에는 Lambda를 이용해본 경험이 있어서 손쉽게 개발할 수 있고, 데이터의 크기도 그리 크지 않기 때문에 Lambda를 선택하려 했습니다. 그러나 마음 한편에서는 데이터의 <strong>일관성</strong>과 <strong>무결성</strong> 관점에서 무엇이 더 좋을까 하는 궁금증이 있었습니다.</p>
+<p>Glue는 사용하기에 러닝 커브도 있고 익숙한 서비스는 아니었지만, Glue에는 <strong>Data Catalog</strong>라는 서비스가 존재해요. Data Catalog는 데이터 세트에 대한 메타데이터(Schema)를 저장하는 저장소입니다. 이를 이용하면 전처리된 데이터의 형식을 일관성 있게 유지할 수 있고, 추후 분석 시에도 Athena와 연계하여 SQL을 이용해 일관되게 데이터를 가져올 수 있는 시너지 효과가 있어서 Glue를 선택하였습니다.</p>
+<p>Crawler를 이용해 원천 데이터 세트에 대한 메타데이터를 자동으로 생성하여 Data Catalog에 저장할 수도 있었지만, 우리는 좀 더 정확하고 일관된 데이터를 위해 직접 Data Catalog를 생성하였습니다.</p>
+<div style="position: relative; overflow: visible;">
+  <img src="/img/article/data_pipeline/meta_data_schema.png" alt="Meta Data Schema" style="position: relative; left: 50%; transform: translateX(-45%); width: 110rem; max-width: none; border-radius: 10px;">
+</div>
+<!-- <div style="text-align: center;">
+  <img src="/img/article/data_pipeline/meta_data_schema.png" alt="Meta Data Schema" style="width: 100%; height: auto; border-radius: 10px;">
+</div> -->
+<div style="text-align: center;">
+  <em>&lt;Meta Data Schema&gt;</em>
+</div>
+<div style="position: relative; overflow: visible;">
+  <img src="/img/article/data_pipeline/sensor_data_schema.png" alt="Sensor Data Schema" style="position: relative; left: 50%; transform: translateX(-45%); width: 110rem; max-width: none; border-radius: 10px;">
+</div>
+<!-- <div style="text-align: center;">
+  <img src="/img/article/data_pipeline/sensor_data_schema.png" alt="Sensor Data Schema" style="width: 100%; height: auto; border-radius: 10px;">
+</div> -->
+<div style="text-align: center;">
+  <em>&lt;Sensor Data Schema&gt;</em>
+</div>
+
+<p>전처리된 데이터는 빅데이터 분야에서 많이 사용하는 <strong>Parquet</strong> 형식으로 저장하였습니다.</p>
+<br>
+
+<hr>
+<h2 id="데이터-분석"><a href="#데이터-분석" class="headerlink" title="데이터 분석"></a>데이터 분석</h2><br>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <img src="/img/article/data_pipeline/athena.png" alt="Athena" style="width: 20%; border-radius: 10px; margin: 0 1%;">
+  <img src="/img/article/data_pipeline/lambda.png" alt="Lambda" style="width: 20%; border-radius: 10px; margin: 0 1%;">
+</div>
+
+<p>데이터 분석을 위해 우리는 <strong>Lambda</strong>, <strong>EC2</strong>, 그리고 사내에 세팅된 <strong>MLPC</strong>까지 총 세 가지 선택지가 있었습니다. 각 옵션마다 장단점이 있었기 때문에 다음과 같은 기준을 세워 우리에게 적합한 서비스를 결정하였습니다.</p>
+<ol>
+<li><p><strong>비용 효율성</strong></p>
+<ul>
+<li>AWS를 선택한 이유 중 하나는 온디맨드 방식으로 사용한 만큼만 비용을 지불할 수 있다는 점이었습니다. 하지만 지속적으로 높은 비용이 발생한다면 우리에게 적합하지 않습니다.</li>
+</ul>
+</li>
+<li><p><strong>유지보수 및 모니터링의 용이성</strong></p>
+<ul>
+<li>데이터 파이프라인은 추후 확장성이 필요하며, 어느 단계에서 문제가 발생하는지 빠르게 파악할 수 있어야 합니다.</li>
+</ul>
+</li>
+<li><p><strong>복잡한 분석 코드의 실행 가능성</strong></p>
+<ul>
+<li>서비스가 고도화될수록 분석 코드도 복잡해질 거예요. 우리는 이러한 코드를 무리 없이 실행할 수 있는 서비스가 필요합니다.</li>
+</ul>
+</li>
+</ol>
+<p>비용 효율성에서는 MLPC는 이미 세팅되어 있어 유지비용이 거의 들지 않고, Lambda도 월 10달러 미만으로 비용이 비슷했습니다. 반면에 EC2는 사용하지 않아도 유지 기간 동안 계속 비용이 발생했습니다. 유지보수 및 모니터링의 용이성에서는 Lambda와 EC2는 AWS 서비스이므로 CloudWatch 연계가 수월하여 관리가 편리했지만, MLPC는 AWS 외부 시스템이어서 추가적인 조치가 필요했습니다. 복잡한 분석 코드의 실행 가능성에서는 Lambda는 메모리와 실행 시간에 제한이 있어 부적합했지만, MLPC와 EC2는 이러한 제약이 없어 복잡한 코드를 실행하기에 적합했습니다.</p>
+<p>이러한 평가를 토대로 우리는 먼저 Lambda를 이용해 구축하기로 결정하였습니다. 그러나 Lambda는 최대 실행 시간이 15분으로 제한되어 있다는 단점이 있어, 추후 분석 코드가 고도화되면 EC2로 전환할 계획이에요.</p>
+<br>
+
+<hr>
+<h2 id="데이터-저장"><a href="#데이터-저장" class="headerlink" title="데이터 저장"></a>데이터 저장</h2><br>
+<div style="display: flex; justify-content: center; align-items: center;">
+  <img src="/img/article/data_pipeline/s3.png" alt="S3" style="width: 20%; border-radius: 10px;">
+</div>
+
+<p>데이터는 혼용을 막기 위해 원천 데이터, 전처리된 데이터, 분석 완료된 데이터 3가지 버킷으로 나누어 저장하였습니다. </p>
+<hr>
+<h1 id="성과"><a href="#성과" class="headerlink" title="성과"></a>성과</h1><p>구축한 데이터 파이프라인을 통해 다음과 같은 성과를 얻을 수 있었습니다:</p>
+<ol>
+<li><p><strong>데이터 전송 시간 80% 단축</strong></p>
+<ul>
+<li>한 명분의 데이터 전송 시간이 평균 <strong>5분 이상</strong>에서 <strong>1분 이내</strong>로 감소하여 <strong>80% 이상</strong> 단축되었습니다.</li>
+</ul>
+</li>
+<li><p><strong>휴먼 에러 발생률 100% 감소</strong></p>
+<ul>
+<li>자동화를 통해 수동 작업에서 발생하던 <strong>데이터 누락 및 중복 오류를 완전히 제거</strong>하였습니다.</li>
+</ul>
+</li>
+<li><p><strong>데이터 관리 효율성 50% 향상</strong></p>
+<ul>
+<li>데이터별 라벨링을 통해 <strong>데이터 검색 및 관리 시간이 절반으로 단축</strong>되었습니다.</li>
+</ul>
+</li>
+<li><p><strong>분석 결과 조회 시간 80% 단축</strong></p>
+<ul>
+<li>분석 결과 확인 시간이 평균 <strong>15분</strong>에서 <strong>3분 이내</strong>로 감소하여 <strong>준실시간 조회</strong>가 가능해졌습니다.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h1 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h1><p>이번에 온전히 AWS의 서비스들로만 구성하여 데이터 파이프라인을 구축해보았습니다. 단순히 데이터 전송의 자동화만을 목표로 했다면 더 빠른 시간 안에 구축할 수 있었겠지만, 데이터의 일관성과 무결성, 모니터링, 추후 확장성 등 다양한 관점을 고려하다 보니 많은 공부를 병행해야 했던 프로젝트였습니다. 아직 “완전한 실시간 데이터 전송은 가능할까?”, “데이터 형식이 달라졌을 때에도 동작하는 확장성 있는 아키텍처는 무엇일까?” 하는 마음속 과제들이 남아 있지만, AWS의 다양한 서비스를 활용해 보며 클라우드 활용 능력이 성장할 수 있는 기회가 되었던 것 같습니다.</p>
+<p>이 글이 AWS를 활용하여 데이터 파이프라인 구축을 계획 중이신 엔지니어 분들께 도움이 되길 바랍니다. 읽어주셔서 감사합니다.</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/article/개발자라면 알아야 할 EC2 장애 대응법/" data-toggle="tooltip" data-placement="top" title="개발자라면 알아야 할 EC2 장애 대응법">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/article/하이스트레인저 기술블로그 개발기/" data-toggle="tooltip" data-placement="top" title="하이스트레인저 기술 블로그 개발기">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8%EC%9D%B4%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">데이터 파이프라인이란 무엇인가요?</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EC%9D%BC%EC%83%81%EC%83%9D%ED%99%9C%EC%9D%98-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-1-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B5%90%ED%86%B5-%EC%A0%95%EB%B3%B4"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">일상생활의 데이터 파이프라인 #1 : 실시간 교통 정보</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EC%9D%BC%EC%83%81%EC%83%9D%ED%99%9C%EC%9D%98-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8-2-%EB%82%A0%EC%94%A8-%EC%98%88%EB%B3%B4-%EB%B0%8F-%EA%B8%B0%EC%83%81-%EC%A0%95%EB%B3%B4"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">일상생활의 데이터 파이프라인 #2 : 날씨 예보 및 기상 정보</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#insight-flow-%EC%86%8C%EA%B0%9C"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">INSIGHT FLOW 소개</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EA%B8%B0%EC%A1%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EB%8B%AC-%EB%B0%A9%EC%8B%9D%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%A0%90"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">기존 데이터 전달 방식의 문제점</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#aws%EB%A5%BC-%EC%84%A0%ED%83%9D%ED%95%9C-%EC%9D%B4%EC%9C%A0"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">AWS를 선택한 이유</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%8B%A4%EB%A5%B8-%EC%86%94%EB%A3%A8%EC%85%98%EA%B3%BC%EC%9D%98-%EB%B9%84%EA%B5%90"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">다른 솔루션과의 비교</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EC%9E%90%EC%B2%B4-%EC%9D%B8%ED%94%84%EB%9D%BC-%EA%B5%AC%EC%B6%95-vs-aws"><span class="toc-nav-number">3.1.1.</span> <span class="toc-nav-text">자체 인프라 구축 vs. AWS</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EB%8B%A4%EB%A5%B8-%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C-%EC%84%9C%EB%B9%84%EC%8A%A4azure-gcp-vs-aws"><span class="toc-nav-number">3.1.2.</span> <span class="toc-nav-text">다른 클라우드 서비스(Azure, GCP) vs. AWS</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%8C%8C%EC%9D%B4%ED%94%84%EB%9D%BC%EC%9D%B8%EC%9D%98-%EA%B5%AC%EC%84%B1%EC%9A%94%EC%86%8C%EB%A5%BC-%EC%A0%9C%EA%B3%B5"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">데이터 파이프라인의 구성요소를 제공</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%B9%84%EC%9A%A9-%ED%9A%A8%EC%9C%A8%EC%84%B1"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">비용 효율성</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%EA%B5%AC%EC%B6%95"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">구축</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EC%98%A4%EC%BC%80%EC%8A%A4%ED%8A%B8%EB%A0%88%EC%9D%B4%EC%85%98"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">오케스트레이션</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%88%98%EC%A7%91"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">데이터 수집</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%84%EC%B2%98%EB%A6%AC"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">데이터 전처리</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%B6%84%EC%84%9D"><span class="toc-nav-number">4.4.</span> <span class="toc-nav-text">데이터 분석</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%80%EC%9E%A5"><span class="toc-nav-number">4.5.</span> <span class="toc-nav-text">데이터 저장</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%EC%84%B1%EA%B3%BC"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">성과</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#%EB%A7%88%EC%B9%98%EB%A9%B0"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">마치며</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#AWS" title="AWS">AWS</a>
+                        
+                          <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                        
+                          <a class="tag" href="/tags/#Infra" title="Infra">Infra</a>
+                        
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<!-- <script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script> -->
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+        <!-- Footer -->
+        <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- <ul class="list-inline text-center">
+                         
+                    <li>
+                        <a target="_blank" href="https://github.com/cinepick.dev@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                     
+                </ul> -->
+                <p class="copyright text-muted">
+                    Copyright &copy; HiStranger 2025
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document,
+            t = "script",
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener(
+                "load",
+                function (e) {
+                    c(null, e);
+                },
+                false
+            );
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($("#tag_cloud").length !== 0) {
+        async("https://www.tech.hi-str.com/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: "#bbbbee", end: "#0085a1" },
+            };
+            $("#tag_cloud a").tagcloud();
+        });
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    });
+</script>
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = "UA-XXXXXXXX-X";
+    var _gaDomain = "yoursite";
+
+    // Originial
+    (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+            i[r] ||
+            function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }),
+            (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+    })(window, document, "script", "//www.google-analytics.com/analytics.js", "ga");
+
+    ga("create", _gaId, _gaDomain);
+    ga("send", "pageview");
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = "xxx";
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+        <!-- <a id="rocket" href="#top" class=""></a> -->
+        <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+        <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+        <!-- Image to hack wechat -->
+        <img src="https://www.tech.hi-str.com/img/icon_wechat.png" width="0" height="0" />
+        <!-- Migrate from head to bottom, no longer block render and still work -->
+
+        <!-- 복사 방지용 스크립트 추가 -->
+        <script type="text/javascript">
+          // 마우스 오른쪽 버튼 클릭 방지
+          document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+          });
+
+          // 키보드 단축키 방지 (Ctrl+C, Ctrl+V 등)
+          document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && (event.key === 'c' || event.key === 'C' || event.key === 'x' || event.key === 'v' || event.key === 'a' || event.key === 's')) {
+              event.preventDefault();
+            }
+          });
+
+          // 드래그 앤 드롭 방지
+          document.addEventListener('dragstart', function(event) {
+            event.preventDefault();
+          });
+        </script>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
