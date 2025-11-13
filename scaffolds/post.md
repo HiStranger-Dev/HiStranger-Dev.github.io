@@ -1,8 +1,8 @@
 ---
-title: {{ title }}
+title: { { title } }
 subtitle:
-date: {{ date }}
+date: { { date } }
 catalog: true
-header-img:
+header-img: "/img/header_img/background.jpg"
 tags:
 ---
