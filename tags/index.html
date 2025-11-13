@@ -79,37 +79,26 @@
 
     <!-- hack iOS CSS :active style -->
     <body ontouchstart="">
-        <!-- Modified by Yu-Hsuan Yen -->
+        <!-- Modified by mina -->
 <!-- Post Header -->
-<style type="text/css">
-  header.intro-header{
-      
-          background-image: url('/img/header_img/background.jpg')
-          /*page*/
-      
-  }
-  
-</style>
 
-<header class="intro-header">
-  <!-- Signature -->
-  <div id="signature">
+
+<header class="intro-header" style="background-image: url('/img/header_img/background.jpg');">
+  <div id="signature"
+       >
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-          <div class="site-heading">
-            <h1>Tags</h1>
-            <!--<hr class="small">-->
-            <span class="subheading"
-              >영화와 사람들의 소통을 연결하는 곳, 하이스트레인저 기술 블로그입니다.</span
-            >
-          </div>
+            <div class="site-heading">
+              <h1>Tags</h1>
+              <span class="subheading">영화와 사람들의 소통을 연결하는 곳, 하이스트레인저 기술 블로그입니다.</span>
+            </div>
           
         </div>
       </div>
     </div>
-  </div>
+  </div> <!-- end of #signature -->
 </header>
  <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -442,13 +431,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/개발자라면 알아야 할 EC2 장애 대응법/">
+                     <a href="/article/AWS를 활용한 데이터 파이프라인 구축/">
                         <h2 class="post-title">
-                            개발자라면 알아야 할 EC2 장애 대응법
+                            AWS 서비스들로 구현하는 데이터 파이프라인
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                불안정한 EC2 서버, 원인 분석부터 복구까지의 실전 기록을 공유합니다.
+                                클라우드 시대 데이터 파이프라인 구축, 우리는 이렇게 AWS를 활용했습니다.
                             </h3>
                         
                     </a>
@@ -461,13 +450,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/AWS를 활용한 데이터 파이프라인 구축/">
+                     <a href="/article/개발자라면 알아야 할 EC2 장애 대응법/">
                         <h2 class="post-title">
-                            AWS 서비스들로 구현하는 데이터 파이프라인
+                            개발자라면 알아야 할 EC2 장애 대응법
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                클라우드 시대 데이터 파이프라인 구축, 우리는 이렇게 AWS를 활용했습니다.
+                                불안정한 EC2 서버, 원인 분석부터 복구까지의 실전 기록을 공유합니다.
                             </h3>
                         
                     </a>
@@ -893,5 +882,20 @@
             event.preventDefault();
           });
         </script>
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
 </html>

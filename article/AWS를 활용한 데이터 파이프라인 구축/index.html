@@ -79,62 +79,39 @@
 
     <!-- hack iOS CSS :active style -->
     <body ontouchstart="">
-        <!-- Modified by Yu-Hsuan Yen -->
+        <!-- Modified by mina -->
 <!-- Post Header -->
-<style type="text/css">
-  header.intro-header{
-      
-          background-image: url('/img/article_header/data_pipeline/data_pipeline_background.jpg')
-          /*post*/
-      
-  }
-  
-</style>
 
-<header class="intro-header">
-  <!-- Signature -->
-  <div id="signature">
+
+<header class="intro-header" style="background-image: url('/img/article_header/data_pipeline/data_pipeline_background.jpg');">
+  <div id="signature"
+       >
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-          <div class="post-heading">
-            <div class="tags">
+            <div class="post-heading">
               
-              <a
-                class="tag"
-                href="/tags/#AWS"
-                title="AWS"
-                >AWS</a
-              >
+                <div class="tags">
+                  
+                    <a class="tag" href="/tags/#AWS" title="AWS">AWS</a>
+                  
+                    <a class="tag" href="/tags/#DevOps" title="DevOps">DevOps</a>
+                  
+                    <a class="tag" href="/tags/#Infra" title="Infra">Infra</a>
+                  
+                </div>
               
-              <a
-                class="tag"
-                href="/tags/#DevOps"
-                title="DevOps"
-                >DevOps</a
-              >
+              <h1>AWS 서비스들로 구현하는 데이터 파이프라인</h1>
               
-              <a
-                class="tag"
-                href="/tags/#Infra"
-                title="Infra"
-                >Infra</a
-              >
+                <h2 class="subheading">클라우드 시대 데이터 파이프라인 구축, 우리는 이렇게 AWS를 활용했습니다.</h2>
               
             </div>
-            <h1>AWS 서비스들로 구현하는 데이터 파이프라인</h1>
-            <h2 class="subheading">클라우드 시대 데이터 파이프라인 구축, 우리는 이렇게 AWS를 활용했습니다.</h2>
-            <!-- <span class="meta">
-                          Posted by HiStranger on
-                          2025년 2월 26일
-                      </span> -->
-          </div>
           
         </div>
       </div>
     </div>
-  </div>
+  </div> <!-- end of #signature -->
 </header>
  <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -788,5 +765,20 @@
             event.preventDefault();
           });
         </script>
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
 </html>

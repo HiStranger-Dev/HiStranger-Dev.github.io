@@ -79,76 +79,43 @@
 
     <!-- hack iOS CSS :active style -->
     <body ontouchstart="">
-        <!-- Modified by Yu-Hsuan Yen -->
+        <!-- Modified by mina -->
 <!-- Post Header -->
-<style type="text/css">
-  header.intro-header{
-      
-          background-image: url('/img/header_img/background.jpg')
-          /*post*/
-      
-  }
-  
-</style>
 
-<header class="intro-header">
-  <!-- Signature -->
-  <div id="signature">
+
+<header class="intro-header" style="background-image: url('/img/header_img/background.jpg');">
+  <div id="signature"
+       >
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-          <div class="post-heading">
-            <div class="tags">
+            <div class="post-heading">
               
-              <a
-                class="tag"
-                href="/tags/#TECH"
-                title="TECH"
-                >TECH</a
-              >
+                <div class="tags">
+                  
+                    <a class="tag" href="/tags/#TECH" title="TECH">TECH</a>
+                  
+                    <a class="tag" href="/tags/#Frontend" title="Frontend">Frontend</a>
+                  
+                    <a class="tag" href="/tags/#Design System" title="Design System">Design System</a>
+                  
+                    <a class="tag" href="/tags/#Compound Components" title="Compound Components">Compound Components</a>
+                  
+                    <a class="tag" href="/tags/#Render Props" title="Render Props">Render Props</a>
+                  
+                </div>
               
-              <a
-                class="tag"
-                href="/tags/#Frontend"
-                title="Frontend"
-                >Frontend</a
-              >
+              <h1>합성 컴포넌트 패턴 도입하기</h1>
               
-              <a
-                class="tag"
-                href="/tags/#Design System"
-                title="Design System"
-                >Design System</a
-              >
-              
-              <a
-                class="tag"
-                href="/tags/#Compound Components"
-                title="Compound Components"
-                >Compound Components</a
-              >
-              
-              <a
-                class="tag"
-                href="/tags/#Render Props"
-                title="Render Props"
-                >Render Props</a
-              >
+                <h2 class="subheading">렌더링 IoC와 합성 컴포넌트에 대해 알아보고, 유연한 UI를 만드는 방법을 공유합니다.</h2>
               
             </div>
-            <h1>합성 컴포넌트 패턴 도입하기</h1>
-            <h2 class="subheading">렌더링 IoC와 합성 컴포넌트에 대해 알아보고, 유연한 UI를 만드는 방법을 공유합니다.</h2>
-            <!-- <span class="meta">
-                          Posted by HiStranger on
-                          2025년 10월 29일
-                      </span> -->
-          </div>
           
         </div>
       </div>
     </div>
-  </div>
+  </div> <!-- end of #signature -->
 </header>
  <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -660,5 +627,20 @@
             event.preventDefault();
           });
         </script>
-    </body>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
 </html>
