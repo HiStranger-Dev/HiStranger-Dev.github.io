@@ -79,26 +79,37 @@
 
     <!-- hack iOS CSS :active style -->
     <body ontouchstart="">
-        <!-- Modified by mina -->
+        <!-- Modified by Yu-Hsuan Yen -->
 <!-- Post Header -->
+<style type="text/css">
+  header.intro-header{
+      
+          background-image: url('/img/header_img/background.jpg')
+          /*page*/
+      
+  }
+  
+</style>
 
-
-<header class="intro-header" style="background-image: url('/img/header_img/background.jpg');">
-  <div id="signature"
-       >
+<header class="intro-header">
+  <!-- Signature -->
+  <div id="signature">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-            <div class="site-heading">
-              <h1>Tags</h1>
-              <span class="subheading">영화와 사람들의 소통을 연결하는 곳, 하이스트레인저 기술 블로그입니다.</span>
-            </div>
+          <div class="site-heading">
+            <h1>Tags</h1>
+            <!--<hr class="small">-->
+            <span class="subheading"
+              >영화와 사람들의 소통을 연결하는 곳, 하이스트레인저 기술 블로그입니다.</span
+            >
+          </div>
           
         </div>
       </div>
     </div>
-  </div> <!-- end of #signature -->
+  </div>
 </header>
  <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -144,14 +155,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                      -->
@@ -220,9 +231,9 @@
                 
                     <a href="#Infra" title="Infra" rel="1">Infra</a>
                 
-                    <a href="#Blog" title="Blog" rel="1">Blog</a>
-                
                     <a href="#Server" title="Server" rel="1">Server</a>
+                
+                    <a href="#Blog" title="Blog" rel="1">Blog</a>
                 
                     <a href="#TECH" title="TECH" rel="1">TECH</a>
                 
@@ -431,13 +442,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/AWS를 활용한 데이터 파이프라인 구축/">
+                     <a href="/article/개발자라면 알아야 할 EC2 장애 대응법/">
                         <h2 class="post-title">
-                            AWS 서비스들로 구현하는 데이터 파이프라인
+                            개발자라면 알아야 할 EC2 장애 대응법
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                클라우드 시대 데이터 파이프라인 구축, 우리는 이렇게 AWS를 활용했습니다.
+                                불안정한 EC2 서버, 원인 분석부터 복구까지의 실전 기록을 공유합니다.
                             </h3>
                         
                     </a>
@@ -450,13 +461,13 @@
                   <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
                   </li> -->
                  <div class="post-preview">
-                     <a href="/article/개발자라면 알아야 할 EC2 장애 대응법/">
+                     <a href="/article/AWS를 활용한 데이터 파이프라인 구축/">
                         <h2 class="post-title">
-                            개발자라면 알아야 할 EC2 장애 대응법
+                            AWS 서비스들로 구현하는 데이터 파이프라인
                         </h2>
                         
                             <h3 class="post-subtitle">
-                                불안정한 EC2 서버, 원인 분석부터 복구까지의 실전 기록을 공유합니다.
+                                클라우드 시대 데이터 파이프라인 구축, 우리는 이렇게 AWS를 활용했습니다.
                             </h3>
                         
                     </a>
@@ -519,32 +530,6 @@
             </div>
             
             <div class="one-tag-list">
-                <span class="fa fa-tag listing-seperator" id="Blog">
-                    <span class="tag-text">Blog</span>
-                </span>
-                
-                  <!-- <li class="listing-item">
-                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                  </li> -->
-                 <div class="post-preview">
-                     <a href="/article/하이스트레인저 기술블로그 개발기/">
-                        <h2 class="post-title">
-                            하이스트레인저 기술 블로그 개발기
-                        </h2>
-                        
-                            <h3 class="post-subtitle">
-                                스타트업에서의 기술 블로그 개발 과정, 하이스트레인저는 어떤 방식으로 구축하였을까요?
-                            </h3>
-                        
-                    </a>
-                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
-                </div>
-                <hr>
-                
-            </div>
-            
-            <div class="one-tag-list">
                 <span class="fa fa-tag listing-seperator" id="Server">
                     <span class="tag-text">Server</span>
                 </span>
@@ -561,6 +546,32 @@
                         
                             <h3 class="post-subtitle">
                                 불안정한 EC2 서버, 원인 분석부터 복구까지의 실전 기록을 공유합니다.
+                            </h3>
+                        
+                    </a>
+                    <!-- <p class="post-meta">{{ post.date | date:"%Y-%m-%d" }}</p> -->
+                </div>
+                <hr>
+                
+            </div>
+            
+            <div class="one-tag-list">
+                <span class="fa fa-tag listing-seperator" id="Blog">
+                    <span class="tag-text">Blog</span>
+                </span>
+                
+                  <!-- <li class="listing-item">
+                  <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                  <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                  </li> -->
+                 <div class="post-preview">
+                     <a href="/article/하이스트레인저 기술블로그 개발기/">
+                        <h2 class="post-title">
+                            하이스트레인저 기술 블로그 개발기
+                        </h2>
+                        
+                            <h3 class="post-subtitle">
+                                스타트업에서의 기술 블로그 개발 과정, 하이스트레인저는 어떤 방식으로 구축하였을까요?
                             </h3>
                         
                     </a>
@@ -882,20 +893,5 @@
             event.preventDefault();
           });
         </script>
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+    </body>
 </html>

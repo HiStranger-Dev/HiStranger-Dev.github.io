@@ -79,47 +79,90 @@
 
     <!-- hack iOS CSS :active style -->
     <body ontouchstart="">
-        <!-- Modified by mina -->
+        <!-- Modified by Yu-Hsuan Yen -->
 <!-- Post Header -->
+<style type="text/css">
+  header.intro-header{
+      
+          background-image: url('/img/article_header/llm_trend/llm_trend_header.png')
+          /*post*/
+      
+  }
+  
+</style>
 
-
-<header class="intro-header" style="background-image: url('/img/article_header/llm_trend/llm_trend_header.png');">
-  <div id="signature"
-       >
+<header class="intro-header">
+  <!-- Signature -->
+  <div id="signature">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-            <div class="post-heading">
+          <div class="post-heading">
+            <div class="tags">
               
-                <div class="tags">
-                  
-                    <a class="tag" href="/tags/#LLM" title="LLM">LLM</a>
-                  
-                    <a class="tag" href="/tags/#GPT" title="GPT">GPT</a>
-                  
-                    <a class="tag" href="/tags/#GEMINI" title="GEMINI">GEMINI</a>
-                  
-                    <a class="tag" href="/tags/#LLAMA" title="LLAMA">LLAMA</a>
-                  
-                    <a class="tag" href="/tags/#CLOVA" title="CLOVA">CLOVA</a>
-                  
-                    <a class="tag" href="/tags/#RAG" title="RAG">RAG</a>
-                  
-                    <a class="tag" href="/tags/#AI" title="AI">AI</a>
-                  
-                </div>
+              <a
+                class="tag"
+                href="/tags/#LLM"
+                title="LLM"
+                >LLM</a
+              >
               
-              <h1>2025년 실무자가 알아야 할 LLM 기술 트렌드</h1>
+              <a
+                class="tag"
+                href="/tags/#GPT"
+                title="GPT"
+                >GPT</a
+              >
               
-                <h2 class="subheading">급변하는 AI 시대에 실무자가 적용할 수 있는 생성형 AI</h2>
+              <a
+                class="tag"
+                href="/tags/#GEMINI"
+                title="GEMINI"
+                >GEMINI</a
+              >
+              
+              <a
+                class="tag"
+                href="/tags/#LLAMA"
+                title="LLAMA"
+                >LLAMA</a
+              >
+              
+              <a
+                class="tag"
+                href="/tags/#CLOVA"
+                title="CLOVA"
+                >CLOVA</a
+              >
+              
+              <a
+                class="tag"
+                href="/tags/#RAG"
+                title="RAG"
+                >RAG</a
+              >
+              
+              <a
+                class="tag"
+                href="/tags/#AI"
+                title="AI"
+                >AI</a
+              >
               
             </div>
+            <h1>2025년 실무자가 알아야 할 LLM 기술 트렌드</h1>
+            <h2 class="subheading">급변하는 AI 시대에 실무자가 적용할 수 있는 생성형 AI</h2>
+            <!-- <span class="meta">
+                          Posted by HiStranger on
+                          2025년 9월 19일
+                      </span> -->
+          </div>
           
         </div>
       </div>
     </div>
-  </div> <!-- end of #signature -->
+  </div>
 </header>
  <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -165,14 +208,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                      -->
@@ -680,20 +723,5 @@
             event.preventDefault();
           });
         </script>
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+    </body>
 </html>

@@ -79,37 +79,55 @@
 
     <!-- hack iOS CSS :active style -->
     <body ontouchstart="">
-        <!-- Modified by mina -->
+        <!-- Modified by Yu-Hsuan Yen -->
 <!-- Post Header -->
+<style type="text/css">
+  header.intro-header{
+      
+          background-image: url('/img/article_header/server_debugging/server_debugging_background.png')
+          /*post*/
+      
+  }
+  
+</style>
 
-
-<header class="intro-header" style="background-image: url('/img/article_header/server_debugging/server_debugging_background.png');">
-  <div id="signature"
-       >
+<header class="intro-header">
+  <!-- Signature -->
+  <div id="signature">
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           
-            <div class="post-heading">
+          <div class="post-heading">
+            <div class="tags">
               
-                <div class="tags">
-                  
-                    <a class="tag" href="/tags/#AWS" title="AWS">AWS</a>
-                  
-                    <a class="tag" href="/tags/#Server" title="Server">Server</a>
-                  
-                </div>
+              <a
+                class="tag"
+                href="/tags/#AWS"
+                title="AWS"
+                >AWS</a
+              >
               
-              <h1>개발자라면 알아야 할 EC2 장애 대응법</h1>
-              
-                <h2 class="subheading">불안정한 EC2 서버, 원인 분석부터 복구까지의 실전 기록을 공유합니다.</h2>
+              <a
+                class="tag"
+                href="/tags/#Server"
+                title="Server"
+                >Server</a
+              >
               
             </div>
+            <h1>개발자라면 알아야 할 EC2 장애 대응법</h1>
+            <h2 class="subheading">불안정한 EC2 서버, 원인 분석부터 복구까지의 실전 기록을 공유합니다.</h2>
+            <!-- <span class="meta">
+                          Posted by HiStranger on
+                          2025년 5월 2일
+                      </span> -->
+          </div>
           
         </div>
       </div>
     </div>
-  </div> <!-- end of #signature -->
+  </div>
 </header>
  <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
@@ -155,14 +173,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archive/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archive/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                      -->
@@ -672,20 +690,5 @@
             event.preventDefault();
           });
         </script>
-    <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-</body>
+    </body>
 </html>
