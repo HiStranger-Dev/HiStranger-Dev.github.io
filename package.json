@@ -5,6 +5,12 @@
   "hexo": {
     "version": "8.1.0"
   },
+  "scripts": {
+    "build": "hexo generate && cp .nojekyll public/.nojekyll 2>/dev/null || touch public/.nojekyll",
+    "clean": "hexo clean",
+    "deploy": "npm run build && hexo deploy",
+    "server": "hexo server"
+  },
   "dependencies": {
     "aplayer": "^1.10.1",
     "hexo": "^8.0.0",
