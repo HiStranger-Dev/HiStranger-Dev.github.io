@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Head tag -->
+    <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Hi Stranger&#39;s Tech Blog" />
+    <meta name="keyword" content="Tech Blog" />
+    <link rel="shortcut icon" href="/img/icon.ico" />
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+         레거시로 가득한 DB 이관하기 - 하이스트레인저 기술 블로그 
+    </title>
+
+    <link rel="canonical" href="https://www.tech.hi-str.com/article/레거시로-가득한-DB-이관하기/" />
+
+    <!-- 복사 방지용 스타일 추가 -->
+    <style>
+      body {
+        -webkit-user-select: none; /* Chrome, Safari */
+        -moz-user-select: none;    /* Firefox */
+        -ms-user-select: none;     /* Internet Explorer/Edge */
+        user-select: none;         /* 표준 */
+      }
+    </style>
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Default Custom CSS -->
+    
+<link rel="stylesheet" href="/css/beantech.min.css">
+ 
+<link rel="stylesheet" href="/css/donate.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+ 
+<link rel="stylesheet" href="/css/widget.css">
+ 
+<link rel="stylesheet" href="/css/rocket.css">
+ 
+<link rel="stylesheet" href="/css/signature.css">
+
+
+    <!-- HiStranger Custom CSS -->
+    
+<link rel="stylesheet" href="/css/toc.css">
+ 
+<link rel="stylesheet" href="/css/custom.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link
+        href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css"
+        rel="stylesheet"
+        type="text/css"
+    />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+    <!-- hack iOS CSS :active style -->
+    <body ontouchstart="">
+        <!-- Modified by mina -->
+<!-- Post Header -->
+
+
+<header class="intro-header" style="background-image: url('/img/article_header/db_migration/db_migration_background.png');">
+  <div id="signature"
+       >
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+          
+            <div class="post-heading">
+              
+                <div class="tags">
+                  
+                    <a class="tag" href="/tags/#AWS" title="AWS">AWS</a>
+                  
+                    <a class="tag" href="/tags/#Server" title="Server">Server</a>
+                  
+                    <a class="tag" href="/tags/#DB" title="DB">DB</a>
+                  
+                    <a class="tag" href="/tags/#Migration" title="Migration">Migration</a>
+                  
+                </div>
+              
+              <h1>레거시로 가득한 DB 이관하기</h1>
+              
+                <h2 class="subheading">백엔드 개발자라면 한번쯤 마주치는 DB이관 작업, 어떻게 작업하시나요?</h2>
+              
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </div> <!-- end of #signature -->
+</header>
+ <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Hi, Stranger</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="https://www.hi-str.com/" target="_blank">About</a>
+                    </li>
+
+                    <!-- 
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                     -->
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body = document.body;
+    var $toggle = document.querySelector(".navbar-toggle");
+    var $navbar = document.querySelector("#huxblog_navbar");
+    var $collapse = document.querySelector(".navbar-collapse");
+
+    $toggle.addEventListener("click", handleMagic);
+    function handleMagic(e) {
+        if ($navbar.className.indexOf("in") > 0) {
+            // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function () {
+                // prevent frequently toggle
+                if ($navbar.className.indexOf("in") < 0) {
+                    $collapse.style.height = "0px";
+                }
+            }, 400);
+        } else {
+            // OPEN
+            $collapse.style.height = "auto";
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+        <!-- Main Content -->
+        <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>안녕하세요, 하이스트레인저 백엔드 엔지니어 이상훈입니다.</p>
+<p>개발자들 사이에서는 “돌아가는 코드는 건드리지 않는다”라는 격언이 있습니다. 하지만 그 코드가 비즈니스의 성장을 가로막고 있다면 어떨까요?</p>
+<p>최근 저는 <a href="https://cinelab.co.kr/">씨네랩(Cinelab)</a> 서비스 리뉴얼 프로젝트를 진행하며, 수년간 쌓인 레거시 데이터를 새로운 시스템으로 이관하는 작업을 맡았습니다. 단순히 테이블을 옮기는 작업이었다면 <strong>mysqldump</strong>를 썼을 겁니다. 하지만 제가 마주한 현실은 EC2 로컬에 묶인 이미지 파일들, 암호 같은 상태 값들, 그리고 테스트와 운영 데이터가 뒤섞인 <strong>‘카오스’</strong> 그 자체였습니다.</p>
+<p>오늘은 이 혼란스러운 데이터를 어떻게 <strong>단 한 건의 유실 없이</strong> 이관했는지, 그 치열했던 과정을 공유합니다.<br><br></p>
+<hr>
+<h2 id="db-마이그레이션-다-같은-작업이-아닙니다"><a href="#DB-마이그레이션-다-같은-작업이-아닙니다" class="headerlink" title="DB 마이그레이션, 다 같은 작업이 아닙니다"></a>DB 마이그레이션, 다 같은 작업이 아닙니다</h2><p>본격적인 이야기로 들어가기에 앞서, 우리가 흔히 말하는 <strong>DB 마이그레이션</strong>에 대해 잠시 짚고 넘어갈까 합니다. 마이그레이션은 목적과 작업 방식에 따라 크게 세 가지로 나눌 수 있습니다.</p>
+<div style="text-align: center;">
+  <img src="/img/article/db_migration/db_migration_sort.png" alt="DB 마이그레이션 종류" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<ol>
+<li><p><strong>동종 마이그레이션 (Homogeneous Migration)</strong><br>같은 DB 엔진 내에서 버전만 올리거나(예: MySQL 5.7 → 8.0), 서버만 이동하는 경우입니다. 스키마 변경이 거의 없어 비교적 난이도가 낮습니다.</p>
+</li>
+<li><p><strong>이기종&#x2F;플랫폼 마이그레이션 (Heterogeneous&#x2F;Platform Migration)</strong><br>DB 엔진을 바꾸거나(Oracle → MySQL), 온프레미스(On-premise) 환경에서 클라우드(Cloud) 환경으로 인프라를 옮기는 작업입니다. 인프라적인 고려사항이 많습니다.</p>
+</li>
+<li><p><strong>애플리케이션&#x2F;스키마 리팩토링 (Schema Refactoring)</strong><br>서비스 로직의 변화에 따라 DB 구조(Schema) 자체를 뜯어고치는 작업입니다. 데이터의 의미를 재해석하고 매핑해야 하므로 가장 난이도가 높고 위험 부담이 큽니다.</p>
+</li>
+</ol>
+<p>제가 이번에 진행한 작업은 2번과 3번이 혼합된 형태였습니다.<br>물리적으로는 EC2 내부에 설치된 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>로컬 MySQL을 AWS RDS로 옮겨야 했고(플랫폼 이관)</strong></span>, 논리적으로는 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>레거시 스키마를 완전히 새로운 엔티티 구조로 재설계(스키마 리팩토링)</strong></span>하여 데이터를 이전하여야 했습니다.<br><br></p>
+<hr>
+<h2 id="마주한-레거시의-실태"><a href="#마주한-레거시의-실태" class="headerlink" title="마주한 레거시의 실태"></a>마주한 레거시의 실태</h2><p>리뉴얼을 위해 기존 DB를 분석하면서 마주한 상황은 생각보다 심각했습니다.<br><br></p>
+<h3 id="데이터의-혼란"><a href="#데이터의-혼란" class="headerlink" title="데이터의 혼란"></a>데이터의 혼란</h3><ul>
+<li><p><strong>일관성 없는 네이밍</strong>:<code>UserEntity</code>와 <code>users</code> 테이블이 공존하고, 컬럼명은 <code>camelCase</code>와 <code>snake_case</code>가 무분별하게 섞여 있었습니다.</p>
+</li>
+<li><p><strong>정체를 알 수 없는 매직 넘버(Magic Number)</strong>: 게시글 상태가 0, 1, … 9 등의 숫자로만 저장되어 있었습니다. 문서화된 내용이 전혀 없어, 레거시 코드의 비즈니스 로직을 한 줄 한 줄 역추적해야만 그 의미(0&#x3D;대기, 1&#x3D;승인, 9&#x3D;삭제 등)를 파악할 수 있었습니다.</p>
+</li>
+<li><p><strong>더러운 데이터(Dirty Data)</strong>: 운영 DB 안에 개발 초기에 생성된 <code>test</code>, <code>asd</code>, <code>admin123</code> 같은 무의미한 데이터가 실제 유저 데이터와 구분 없이 섞여 있었습니다. 심지어 OAuth ID 필드가 깨져있거나 비어있는 유령 회원들도 다수 존재했습니다.</p>
+</li>
+</ul>
+<br>
+
+<h3 id="코드에도-없는-유령-필드"><a href="#코드에도-없는-‘유령-필드’" class="headerlink" title="코드에도 없는 ‘유령 필드’"></a>코드에도 없는 ‘유령 필드’</h3><p>가장 난감했던 건 <strong>도대체 어디에 쓰는지 알 수 없는 컬럼들</strong>이었습니다. DB 테이블에는 분명히 존재하고 데이터도 들어있는데, 정작 프로젝트 전체 코드를 아무리 검색해도 해당 컬럼을 사용하는 로직이 단 한 줄도 나오지 않는 필드들이 있었습니다.</p>
+<p><em>“이거 지워도 되는 건가? 혹시 DB 프로시저나 외부 시스템에서 몰래 쓰고 있는 건 아닐까?”</em></p>
+<p>이러한 불확실성은 이관 작업을 진행하는 내내 반복하여 데이터를 검증하게 만들었고, 결국 이 컬럼들이 과거 특정 시점에 쓰이다가 버려진 ‘유령 필드’임을 확신하기까지 꽤 많은 시간이 필요했습니다.<br><br></p>
+<h3 id="파일-시스템의-강결합"><a href="#파일-시스템의-강결합" class="headerlink" title="파일 시스템의 강결합"></a>파일 시스템의 강결합</h3><div style="text-align: center;">
+  <img src="/img/article/db_migration/db_migration_folder.png" alt="EC2 로컬 이미지 디렉토리" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
+
+<p>또 다른 어려움은 <strong>이미지 저장 방식</strong>이었습니다.</p>
+<p>기존 서비스는 이미지를 EC2 서버의 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>로컬 디렉토리(upload&#x2F;)</strong></span>에 저장하고, DB에는 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>상대 경로</strong></span>만 저장하고 있었습니다. 서버가 스케일 아웃(Scale-out)될 수 없는 구조였죠. 리뉴얼된 시스템은 <strong>AWS S3</strong>를 사용하기로 결정했으므로, 저는 DB 이관과 동시에 수천 장의 로컬 파일들을 S3로 업로드하고, DB에 저장된 상대 경로를 S3 URL로 교체(Replace)해야 하는 복합적인 과제를 안게 되었습니다.<br><br></p>
+<hr>
+<h2 id="이관-전략-수립"><a href="#이관-전략-수립" class="headerlink" title="이관 전략 수립"></a>이관 전략 수립</h2><h3 id="1-왜-커스텀-스크립트-였나"><a href="#1-왜-커스텀-스크립트-였나" class="headerlink" title="1. 왜 커스텀 스크립트 였나?"></a>1. 왜 커스텀 스크립트 였나?</h3><p>일반적으로 DB 마이그레이션에는 <strong>mysqldump</strong>나 <strong>AWS DMS</strong>, 혹은 <strong>CDC</strong> 같은 도구들이 널리 쓰입니다. 저 역시 처음엔 AWS DMS를 고려했으나, 이번 프로젝트는 단순 ‘이동’이 아니라, <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>비즈니스 맥락에 맞춘 논리적인 재가공</strong></span>이 필요한 작업이었기에 기성 도구로는 한계가 명확했습니다.</p>
+<ul>
+<li><p><strong>복잡한 비즈니스 로직</strong>: 탈퇴 회원 제외, HTML 포맷 변환 등 단순 매핑을 넘어서는 정제(Cleansing) 과정이 필수였습니다.</p>
+</li>
+<li><p><strong>이관의 원자성(Atomicity)</strong>: DB에는 성공적으로 들어갔는데 S3 업로드가 실패한다면? 이를 방지하기 위해 스크립트를 통해 <strong>이미지를 S3에 업로드하고 URL을 획득한 뒤 DB에 Insert하는</strong> 과정을 하나의 트랜잭션처럼 묶어서 처리해야 했습니다.</p>
+</li>
+</ul>
+<p>결국 데이터 오염을 씻어내고 파일 시스템과의 의존성을 안전하게 다루기 위해, 저는 자체 개발한 스크립트를 활용하여 마이그레이션하는 방식을 선택했습니다.<br><br></p>
+<h3 id="2-이관-순서-정립"><a href="#2-이관-순서-정립" class="headerlink" title="2. 이관 순서 정립"></a>2. 이관 순서 정립</h3><p>도구를 정한 뒤 마주한 두 번째 난관은 <strong>도대체 뭐부터 옮겨야 하는가</strong>였습니다.<br>처음엔 가장 복잡한 테이블부터 해결하려 했으나, 이는 곧 수많은 외래 키(Foreign Key) 오류로 이어졌습니다. 부모 데이터 없이 자식 데이터를 먼저 옮기려 했기 때문입니다.</p>
+<p>그래서 저는 다음과 같이 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>데이터 위계(Hierarchy)</strong></span>를 세워 마이그레이션 순서를 재설계했습니다.</p>
+<div style="text-align: center;">
+  <img src="/img/article/db_migration/db_migration_db_hierarchy.png" alt="DB 위계 사진" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
+
+<ol>
+<li><strong>기준 정보 (Master Data)</strong>: 장르, 태그, 카테고리 등 (참조의 기준)</li>
+<li><strong>핵심 데이터 (Core Data)</strong>: 유저, 영화 정보 등 (서비스 주체)</li>
+<li><strong>행위 데이터 (Transaction Data)</strong>: 댓글, 좋아요, 북마크 등 (활동 결과)</li>
+</ol>
+<p><span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>“Master → Core → Transaction”</strong></span> 순으로 진행하니, 데이터 꼬임이나 참조 무결성 에러를 원천적으로 차단할 수 있었습니다.<br><br></p>
+<hr>
+<h2 id="이관-프로세스-및-아키텍처"><a href="#이관-프로세스-및-아키텍처" class="headerlink" title="이관 프로세스 및 아키텍처"></a>이관 프로세스 및 아키텍처</h2><div style="text-align: center;">
+  <img src="/img/article/db_migration/db_migration_diagram.png" alt="DB 이관 아키텍처" style="width: 80%; height: auto; border-radius: 10px;">
+</div>
+
+<p>저는 Python을 이용해 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>ETL(Extract, Transform, Load) 파이프라인</strong></span>을 구축했습니다.<br><br></p>
+<h3 id="step-1-매핑-및-설계mapping"><a href="#Step-1-매핑-및-설계-Mapping" class="headerlink" title="Step 1. 매핑 및 설계(Mapping)"></a>Step 1. 매핑 및 설계(Mapping)</h3><div style="text-align: center;">
+  <img src="/img/article/db_migration/db_migration_mapping_doc.png" alt="DB 이관 매핑 문서" style="width: 100%; height: auto; border-radius: 10px;">
+</div>
+
+<p>45개의 구형 테이블을 분석하여 신규 서비스에 필요한 데이터만 선별했습니다. 특히 앞서 수립한 전략에 따라 테이블 간의 의존성을 분석하여 이관 순서(Sequence)를 정의하는 데 많은 공을 들였습니다.<br><br></p>
+<h3 id="step-2-transform-amp-cleansing"><a href="#Step-2-Transform-Cleansing" class="headerlink" title="Step 2. Transform &amp; Cleansing"></a>Step 2. Transform &amp; Cleansing</h3><p>스크립트 내에 비즈니스 로직을 태워 데이터를 가공했습니다.</p>
+<ul>
+<li><strong>암호 해독</strong> : 코드 분석을 통해 파악한 상태 값(<code>0 -&gt; PENDING</code>, <code>1 -&gt; APPROVED</code>)을 가독성 높은 ENUM 타입으로 변환하였습니다.</li>
+<li><strong>HTML to Text</strong> : 기존 HTML 본문을 파싱하여 태그를 제거하고 순수 텍스트 파일로 변환하여 DB에는 HTML 태그 상관 없이 데이터만 적재할 수 있도록 하였습니다.</li>
+</ul>
+<br>
+
+<h3 id="step-3-load-db-file"><a href="#Step-3-Load-DB-File" class="headerlink" title="Step 3. Load (DB + File)"></a>Step 3. Load (DB + File)</h3><p>이 과정에서 가장 신경 쓴 부분은 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>동기화</strong></span>입니다. DB 저장과 파일 업로드가 따로 놀지 않도록 트랜잭션 관리에 집중했습니다.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">    # 1. 로컬 이미지 S3 업로드</span><br><span class="line">    s3_url = upload_to_s3(local_image_path)</span><br><span class="line">    </span><br><span class="line">    # 2. 데이터 변환 (상대 경로를 S3 URL로 교체 등)</span><br><span class="line">    new_data = transform_data(old_data, s3_url)</span><br><span class="line">    </span><br><span class="line">    # 3. 신규 DB 적재 (의존성 순서에 따라)</span><br><span class="line">    insert_to_rds(new_data)</span><br><span class="line">    </span><br><span class="line">    success_count += 1</span><br><span class="line"></span><br><span class="line">except Exception as e:</span><br><span class="line">    # 실패 시 로그 기록 및 해당 건너뛰기 (전체 중단 X)</span><br><span class="line">    # 실패 로그를 남겨 추후 재처리하거나 원인 분석</span><br><span class="line">    log_failure(old_data, e)</span><br></pre></td></tr></table></figure>
+<br>
+
+<hr>
+<h2 id="데이터-정합성-검증-4단계-방어막"><a href="#데이터-정합성-검증-4단계-방어막" class="headerlink" title="데이터 정합성 검증 : 4단계 방어막"></a>데이터 정합성 검증 : 4단계 방어막</h2><p>“이관 작업 완료했습니다”라는 말보다 중요한 건 <strong>데이터가 100% 정확하게 옮겨졌는가</strong>입니다. 저는 단순한 데이터 이동을 넘어, 신뢰할 수 있는 데이터베이스를 만들기 위해 4단계의 검증 파이프라인을 구축했습니다.<br><br></p>
+<h3 id="1단계-수량-검증"><a href="#1단계-수량-검증" class="headerlink" title="1단계: 수량 검증"></a>1단계: 수량 검증</h3><p>가장 기초적이지만 필수적인 검증입니다. 단순히 전체 개수만 세는 것이 아니라, <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>논리적인 공식</strong></span>이 성립하는지를 확인했습니다.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">검증 공식: [원본 데이터 총계] - [제외된 데이터(탈퇴/불량)] = [신규 DB 적재 건수]</span><br></pre></td></tr></table></figure>
+
+<p>이 공식에서 단 1건의 오차라도 발생하면 파이프라인을 즉시 중단하고 원인을 분석하도록 설계하여, ‘원인 모를 유실’을 차단했습니다.<br><br></p>
+<h3 id="2단계-참조-무결성-검증-referential-integrity"><a href="#2단계-참조-무결성-검증-Referential-Integrity" class="headerlink" title="2단계: 참조 무결성 검증 (Referential Integrity)"></a>2단계: 참조 무결성 검증 (Referential Integrity)</h3><p>관계형 데이터베이스(RDB)의 핵심인 테이블 간의 관계를 검증합니다. <strong>고아 데이터</strong>가 발생하는 것을 막기 위해 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>ID 매핑 방식</strong></span>을 활용했습니다.</p>
+<ul>
+<li><p><strong>User Mapping</strong>: 구 mem_id와 신규 user_id의 매핑 테이블을 메모리에 로드해두고, 게시글 이관 시 작성자 정보가 매핑 테이블에 없다면(탈퇴했거나 제외된 계정) 해당 게시글도 과감히 제외했습니다.</p>
+</li>
+<li><p><strong>Hierarchical Check</strong>: 대댓글(Child)을 옮길 때, 부모 댓글(Parent)이 이관 대상에 포함되어 있는지 먼저 확인합니다. 부모 없는 자식이 생기는 것을 방지하여 데이터의 일관성을 확보했습니다.</p>
+</li>
+</ul>
+<br>
+
+<h3 id="3단계-데이터-품질-검증"><a href="#3단계-데이터-품질-검증" class="headerlink" title="3단계: 데이터 품질 검증"></a>3단계: 데이터 품질 검증</h3><p>단순 이동이 아니라, 신규 시스템의 엄격한 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>제약 조건(Constraint)</strong></span>을 통과할 수 있는 데이터만 선별했습니다. 이를 통해 Legacy 데이터가 신규 시스템을 오염시키는 것을 방지했습니다.</p>
+<ul>
+<li><p><strong>Format Validation</strong>: 이메일 정규식 검사를 통과하지 못하는 데이터 필터링</p>
+</li>
+<li><p><strong>Logic Validation</strong>: <code>test</code>, <code>null</code>, <code>undefined</code> 등 개발 과정에서 생성된 더미 OAuth ID 필터링</p>
+</li>
+<li><p><strong>Duplication Check</strong>: 중복 계정 발견 시, <code>last_login_at</code>이 가장 최근인 계정만 유지</p>
+</li>
+</ul>
+<br>
+
+<h3 id="4단계-결과-리포팅"><a href="#4단계-결과-리포팅" class="headerlink" title="4단계: 결과 리포팅"></a>4단계: 결과 리포팅</h3><p>검증의 끝은 <strong>근거 남기기</strong>입니다. 스크립트 실행 후에는 반드시 <span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>결과 로그</strong></span>를 남겼습니다</p>
+<ul>
+<li><p><strong>Audit Log</strong>: <code>migration_report.txt</code>를 통해 성공&#x2F;실패 건수와 수행 시간을 기록했습니다.</p>
+</li>
+<li><p><strong>Error Tracking</strong>: 제외된 데이터는 <code>excluded_users.csv</code>와 같이 별도 파일로 저장하고, 제외 사유(예: Reason: Author Not Found)를 명시했습니다. 이를 통해 이관 후 문의가 들어오더라도 데이터를 역추적하여 명확한 답변을 줄 수 있는 근거를 마련했습니다.</p>
+</li>
+</ul>
+<br>
+
+<hr>
+<h2 id="트러블-슈팅-및-회고"><a href="#트러블-슈팅-및-회고" class="headerlink" title="트러블 슈팅 및 회고"></a>트러블 슈팅 및 회고</h2><p>이번 마이그레이션은 단순한 데이터 이동을 넘어, 기술 부채를 청산하고 시스템의 안정성을 확보하는 과정이었습니다. 그 과정에서 마주한 어려움을 통해 얻게 된 교훈을 공유합니다.<br><br></p>
+<h3 id="1-매직-넘버magic-number-제거와-데이터-명시성-확보"><a href="#1-매직-넘버-Magic-Number-제거와-데이터-명시성-확보" class="headerlink" title="1. 매직 넘버(Magic Number) 제거와 데이터 명시성 확보"></a>1. 매직 넘버(Magic Number) 제거와 데이터 명시성 확보</h3><p>가장 큰 어려움은 문서화되지 않은 레거시 데이터 내의 <strong>불확실성</strong>이었습니다.</p>
+<p><code>c_cat = 0</code>과 같은 의미 불명의 숫자(Magic Number)들이 산재해 있었고, 이를 해석하기 위해 프론트엔드 렌더링 로직부터 백엔드 쿼리까지 역추적하는 리버스 엔지니어링이 필요했습니다</p>
+<p>이 경험을 통해 <strong>코드는 그 자체로 문서의 역할을 해야 한다</strong>는 원칙을 재확인했습니다. 이에 따라 신규 시스템에서는 모호한 숫자 대신 직관적인 <code>ENUM(NOTICE, MOVIE_CHAT)</code> 타입을 도입하여, 후속 개발자가 별도의 문서 없이도 코드를 이해할 수 있도록 유지보수성을 강화했습니다.<br><br></p>
+<h3 id="2-ix2fo-병목-해결을-통한-성능-최적화-80-단축"><a href="#2-I-O-병목-해결을-통한-성능-최적화-80-단축" class="headerlink" title="2. I&#x2F;O 병목 해결을 통한 성능 최적화 (80% 단축)"></a>2. I&#x2F;O 병목 해결을 통한 성능 최적화 (80% 단축)</h3><p>운영 환경 이관 시, 수천 장의 이미지를 순차적(Synchronous)으로 S3에 업로드하는 과정에서 <strong>Network I&#x2F;O Latency</strong>가 전체 작업 시간의 90%를 점유하는 병목이 발생했습니다. 제한된 점검 시간(Downtime) 내에 작업을 완료하기 어려운 상황이었습니다.</p>
+<p>이를 해결하기 위해 두 가지 최적화를 적용했습니다.</p>
+<ol>
+<li><p><span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>Concurrency</strong></span>: <code>Python ThreadPoolExecutor</code>를 도입하여 이미지 업로드를 병렬 처리, 네트워크 대역폭 활용 극대화.</p>
+</li>
+<li><p><span style="background-color: #A7F1A8; padding: 2px; border-radius: 4px"><strong>Batch Processing</strong></span>: DB 적재 시 단건 처리가 아닌 <strong>Bulk Insert</strong>를 적용하여 트랜잭션 오버헤드 최소화.</p>
+</li>
+</ol>
+<p>결과적으로 전체 이관 시간을 초기 예상 대비 약 <strong>80%</strong> 단축시켰으며, 대용량 데이터 처리 시 시스템 리소스와 I&#x2F;O 특성을 고려한 아키텍처 설계의 중요성을 체감했습니다.<br><br></p>
+<hr>
+<h2 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h2><p>이번 마이그레이션은 그동안 누적된 기술 부채를 청산하고, 서비스가 다시 빠르게 성장할 수 있는 기술적 토대를 마련하는 과정이었습니다.</p>
+<p>이 기록이 복잡한 데이터 이관 문제로 고민 중인 분들께 작은 힌트가 되길 바랍니다.</p>
+<p>긴 글 읽어주셔서 감사합니다.<br><br><br><br><br></p>
+<hr>
+<h2 id="참고-문서"><a href="#참고-문서" class="headerlink" title="참고 문서"></a>참고 문서</h2><ul>
+<li><a href="https://www.youtube.com/watch?v=Qx1wFzdIKxA"><strong>DB 마이그레이션 실전 고수가 알려주는 5가지 체크포인트</strong></a></li>
+</ul>
+<p><br><br></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/article/합성-컴포넌트-패턴-도입하기/" data-toggle="tooltip" data-placement="top" title="합성 컴포넌트 패턴 도입하기">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+
+                <!--打赏-->
+                
+                <!--打赏-->
+
+                <br>
+                
+                <br>                       
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+  
+    <style>
+      span.toc-nav-number{
+        display: none
+      }
+    </style>
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#db-%EB%A7%88%EC%9D%B4%EA%B7%B8%EB%A0%88%EC%9D%B4%EC%85%98-%EB%8B%A4-%EA%B0%99%EC%9D%80-%EC%9E%91%EC%97%85%EC%9D%B4-%EC%95%84%EB%8B%99%EB%8B%88%EB%8B%A4"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">DB 마이그레이션, 다 같은 작업이 아닙니다</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%A7%88%EC%A3%BC%ED%95%9C-%EB%A0%88%EA%B1%B0%EC%8B%9C%EC%9D%98-%EC%8B%A4%ED%83%9C"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">마주한 레거시의 실태</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%9D%98-%ED%98%BC%EB%9E%80"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">데이터의 혼란</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%EC%BD%94%EB%93%9C%EC%97%90%EB%8F%84-%EC%97%86%EB%8A%94-%EC%9C%A0%EB%A0%B9-%ED%95%84%EB%93%9C"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">코드에도 없는 ‘유령 필드’</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#%ED%8C%8C%EC%9D%BC-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9D%98-%EA%B0%95%EA%B2%B0%ED%95%A9"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">파일 시스템의 강결합</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EC%9D%B4%EA%B4%80-%EC%A0%84%EB%9E%B5-%EC%88%98%EB%A6%BD"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">이관 전략 수립</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%EC%99%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-%EC%98%80%EB%82%98"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">1. 왜 커스텀 스크립트 였나?</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-%EC%9D%B4%EA%B4%80-%EC%88%9C%EC%84%9C-%EC%A0%95%EB%A6%BD"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">2. 이관 순서 정립</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EC%9D%B4%EA%B4%80-%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-%EB%B0%8F-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">이관 프로세스 및 아키텍처</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#step-1-%EB%A7%A4%ED%95%91-%EB%B0%8F-%EC%84%A4%EA%B3%84mapping"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">Step 1. 매핑 및 설계(Mapping)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#step-2-transform-amp-cleansing"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">Step 2. Transform &amp; Cleansing</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#step-3-load-db-file"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">Step 3. Load (DB + File)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%ED%95%A9%EC%84%B1-%EA%B2%80%EC%A6%9D-4%EB%8B%A8%EA%B3%84-%EB%B0%A9%EC%96%B4%EB%A7%89"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">데이터 정합성 검증 : 4단계 방어막</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1%EB%8B%A8%EA%B3%84-%EC%88%98%EB%9F%89-%EA%B2%80%EC%A6%9D"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">1단계: 수량 검증</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2%EB%8B%A8%EA%B3%84-%EC%B0%B8%EC%A1%B0-%EB%AC%B4%EA%B2%B0%EC%84%B1-%EA%B2%80%EC%A6%9D-referential-integrity"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">2단계: 참조 무결성 검증 (Referential Integrity)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3%EB%8B%A8%EA%B3%84-%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%92%88%EC%A7%88-%EA%B2%80%EC%A6%9D"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">3단계: 데이터 품질 검증</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4%EB%8B%A8%EA%B3%84-%EA%B2%B0%EA%B3%BC-%EB%A6%AC%ED%8F%AC%ED%8C%85"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">4단계: 결과 리포팅</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%ED%8A%B8%EB%9F%AC%EB%B8%94-%EC%8A%88%ED%8C%85-%EB%B0%8F-%ED%9A%8C%EA%B3%A0"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">트러블 슈팅 및 회고</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-%EB%A7%A4%EC%A7%81-%EB%84%98%EB%B2%84magic-number-%EC%A0%9C%EA%B1%B0%EC%99%80-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%AA%85%EC%8B%9C%EC%84%B1-%ED%99%95%EB%B3%B4"><span class="toc-nav-number">6.1.</span> <span class="toc-nav-text">1. 매직 넘버(Magic Number) 제거와 데이터 명시성 확보</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-ix2fo-%EB%B3%91%EB%AA%A9-%ED%95%B4%EA%B2%B0%EC%9D%84-%ED%86%B5%ED%95%9C-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94-80-%EB%8B%A8%EC%B6%95"><span class="toc-nav-number">6.2.</span> <span class="toc-nav-text">2. I&#x2F;O 병목 해결을 통한 성능 최적화 (80% 단축)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EB%A7%88%EC%B9%98%EB%A9%B0"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">마치며</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#%EC%B0%B8%EA%B3%A0-%EB%AC%B8%EC%84%9C"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">참고 문서</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#AWS" title="AWS">AWS</a>
+                        
+                          <a class="tag" href="/tags/#Server" title="Server">Server</a>
+                        
+                          <a class="tag" href="/tags/#DB" title="DB">DB</a>
+                        
+                          <a class="tag" href="/tags/#Migration" title="Migration">Migration</a>
+                        
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<!-- <script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script> -->
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+<!-- chrome Firefox 中文锚点定位失效-->
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<!-- smooth scroll behavior polyfill  -->
+<script type="text/javascript" src="/js/smoothscroll.js"></script>
+<script>
+        $('#toc').on('click','a',function(a){
+            // var isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+            // console.log(window.navigator.userAgent,isChrome)
+                // if(isChrome) {
+                    // console.log(a.currentTarget.outerHTML);
+                    // console.log($(a.currentTarget).attr("href"));
+                    //跳转到指定锚点
+                    // document.getElementById(a.target.innerText.toLowerCase()).scrollIntoView(true);
+                    document.getElementById($(a.currentTarget).attr("href").replace("#","")).scrollIntoView({behavior: 'smooth' });
+                // }
+        })  
+</script>
+
+
+        <!-- Footer -->
+        <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- <ul class="list-inline text-center">
+                         
+                    <li>
+                        <a target="_blank" href="https://github.com/cinepick.dev@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                     
+                </ul> -->
+                <p class="copyright text-muted">
+                    Copyright &copy; HiStranger 2025
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document,
+            t = "script",
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener(
+                "load",
+                function (e) {
+                    c(null, e);
+                },
+                false
+            );
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if ($("#tag_cloud").length !== 0) {
+        async("https://www.tech.hi-str.com/js/jquery.tagcloud.js", function () {
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: { start: "#bbbbee", end: "#0085a1" },
+            };
+            $("#tag_cloud a").tagcloud();
+        });
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    });
+</script>
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = "UA-XXXXXXXX-X";
+    var _gaDomain = "yoursite";
+
+    // Originial
+    (function (i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+            i[r] ||
+            function () {
+                (i[r].q = i[r].q || []).push(arguments);
+            }),
+            (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+    })(window, document, "script", "//www.google-analytics.com/analytics.js", "ga");
+
+    ga("create", _gaId, _gaDomain);
+    ga("send", "pageview");
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = "xxx";
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?" + _baId;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+        <!-- <a id="rocket" href="#top" class=""></a> -->
+        <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+        <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+        <!-- Image to hack wechat -->
+        <img src="https://www.tech.hi-str.com/img/icon_wechat.png" width="0" height="0" />
+        <!-- Migrate from head to bottom, no longer block render and still work -->
+
+        <!-- 복사 방지용 스크립트 추가 -->
+        <script type="text/javascript">
+          // 마우스 오른쪽 버튼 클릭 방지
+          document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+          });
+
+          // 키보드 단축키 방지 (Ctrl+C, Ctrl+V 등)
+          document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && (event.key === 'c' || event.key === 'C' || event.key === 'x' || event.key === 'v' || event.key === 'a' || event.key === 's')) {
+              event.preventDefault();
+            }
+          });
+
+          // 드래그 앤 드롭 방지
+          document.addEventListener('dragstart', function(event) {
+            event.preventDefault();
+          });
+        </script>
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
